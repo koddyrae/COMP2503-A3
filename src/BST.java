@@ -1,6 +1,8 @@
 import java.util.Comparator;
 import java.util.Iterator;
 
+//Used the lab 7 skeleton code for BST class
+
 public class BST<T extends Comparable<T>> {
     class BSTNode implements Comparable<BSTNode> {
         private T data;
