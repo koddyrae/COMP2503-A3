@@ -1,5 +1,7 @@
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 //Used the lab 7 skeleton code for BST class
 
@@ -148,7 +150,35 @@ public class BST<T extends Comparable<T>> {
     public Iterator<T> iterator() {
             //TODO:
             return null;
+    }
+
+    private void visit(BSTNode r) {
+        if (r != null)
+            System.out.println(r.getData());
+    }
+
+    private void levelOrderTraversal(BSTNode r) {
+        if (r == null) {
+            return;
         }
+
+        Queue<BSTNode> queue = new LinkedList<>();
+        queue.add(r);
+
+        while (!queue.isEmpty()) {
+            BSTNode curr = queue.remove();
+            visit(curr);
+
+            if (curr.getLeft() != null) {
+                queue.add(curr.getLeft());
+            }
+            if (curr.getRight() != null) {
+                queue.add(curr.getRight());
+            }
+        }
+
+    }
+
 
 
 }
