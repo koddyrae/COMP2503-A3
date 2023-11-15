@@ -53,12 +53,22 @@ public class BST<T extends Comparable<T>> {
         private BSTNode root;
         private int size;
 
-        public BST() {
+    /**
+     * Default Constructor for a BST
+     */
+    public BST() {
             root = null;
             size = 0;
         }
 
-        public BST(Comparator<T> comparator) {
+        //The sorting of the bst happens here???
+        //brain dont understand this :(
+
+    /**
+     * Constructor for a BST that contains a comparator for ordering
+     * @param comparator the desired comparator used
+     */
+    public BST(Comparator<T> comparator) {
             //TODO:
         }
 
@@ -152,9 +162,10 @@ public class BST<T extends Comparable<T>> {
             return null;
     }
 
-    private void visit(BSTNode r) {
-        if (r != null)
-            System.out.println(r.getData());
+    //Not sure if we even need these but i think its good to keep them in here in case
+    private void visit(BSTNode node) {
+        //Cant have print statements so need another way to do this with iterator
+        //TODO:
     }
 
     private void levelOrderTraversal(BSTNode r) {

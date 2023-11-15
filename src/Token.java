@@ -77,6 +77,8 @@ public class Token implements Comparable<Token> {
         return ((difference == 0) ? tokenOne.compareTo(tokenTwo) : -difference);
     }; // End of assigned lambda expression.
 
+    //TODO: someone check this please :D
+    //im not that good at these arrow expressions -koddy
     public static Comparator<Token> CompLengthDesc = (Token tokenOne, Token tokenTwo) -> {
         int difference = tokenOne.str.length() - tokenTwo.str.length();
         return ((difference == 0) ? tokenOne.compareTo(tokenTwo) : -difference);
