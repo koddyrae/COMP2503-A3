@@ -4,12 +4,9 @@ import java.util.Comparator;
  */
 public class Token implements Comparable<Token> {
 
-    /*
-     * Shared across all token objects; belongs to the class, not the instance.
-     */
-    public static int countUniqueWords = 0;
     private int count = 1;
     private String str;
+    public boolean stopWord;
 
     /**
      * Constructs a new Token with the given string.
@@ -18,8 +15,17 @@ public class Token implements Comparable<Token> {
      * @param s The text string of the token.
      */
     public Token(String s) {
-        ++countUniqueWords;
         this.str = s;
+    }
+
+    /**
+     * An alternative constructor to create a stop word, which aides in removal of the stop word later in the program.
+     * @param s The text of the string token.
+     * @param b Whether or not the token is a stop word.
+     */
+    public Token(String s, boolean b) {
+        this.str = s;
+        this.stopWord = b;
     }
 
     /**

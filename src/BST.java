@@ -80,40 +80,65 @@ public class BST<T extends Comparable<T>> implements Iterator {
             return null;
     }
 
-    public T find(T nodeToFind) {
-        //TODO:
-        return null;
+    public T find(T t) {
+        return find(t, root);
     }
 
-    public T min() {
-        //TODO:
-        return null;
+    // This is quite dependent on the equality of the types being compared. If
+    // they are simple base types, it is fine; for the Token class, the tokens
+    // must be equal based on their string contents.
+    private T find(T t, BSTNode n) {
+        int c = n.getData().compareTo(t);
+
+        // Base case, the node that this call was made with is what we're searching for.
+        if (c == 0) {
+            // The data was found at this node, so we return it.
+            // NOTE: it is *imperative* that the argument t is not returned,
+            // because it was never entered into the tree. The existing data
+            // must be returned so that it can be modified if necessary by
+            // the caller.
+            return n.getData();
+        } else if ((c < 0) && (n.getLeft() != null)) {
+            // The data should be found to the left of the current node.
+            return find(t, n.getLeft());
+        } else if ((c > 0) && (n.getRight() != null)) {
+            // The data should be found to the right of the current node.
+            return find(t, n.getRight());
+        } else {
+            // The data was not found at any node in the tree.
+            return null;
+        }
     }
 
-    public int size() { return size; }
+    public T minimumNode() {
+        return minimumNode(root);
+    }
+
+    private T  minimumNode(BSTNode n) {
+        // Either the curent node n is the smallest node, because it has no
+        // lesser node, or the method needs to recurse.
+        return ((n.getLeft() == null) ? n : minimumNode(n.getLeft()));
+    }
+
+    public int size() {
+        return size;
+    }
 
     /**
      * Method to return height of the tree
      * @return height of tree
      */
-    public int height() { return height(root); }
+    public int height() {
+        return height(root);
+    }
 
     /**
      * Method to check for the height of the tree recursively
      * @param r the root node
-     * @return height of tree
+     * @return height of node
      */
     private int height(BSTNode r) {
-        int h = -1;
-        if (r == null) {
-            //if tree doesn't exist then it should just return -1
-            return h;
-        }
-        else {
-            //Height = max length to deepest node
-            h = 1 + Math.max(height(r.getLeft()), height(r.getRight()));
-        }
-        return h;
+        return ( (r == null) ? -1 : (1 + Math.max(height(r.getLeft()), height(r.getRight()))) );
     }
 
     // NOTE: this should be how it is done, according to https://stackoverflow.com/questions/50329874/how-to-iterate-over-alternative-elements-using-an-iterator and https://www.baeldung.com/java-iterator-vs-iterable.
