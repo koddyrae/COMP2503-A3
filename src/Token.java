@@ -77,10 +77,12 @@ public class Token implements Comparable<Token> {
         return ((difference == 0) ? tokenOne.compareTo(tokenTwo) : -difference);
     }; // End of assigned lambda expression.
 
-    //TODO: someone check this please :D
-    //im not that good at these arrow expressions -koddy
+    /**
+     * Sort longer words before shorter words, and when two words have the same
+     * length they are sorted alphabetically.
+     */
     public static Comparator<Token> CompLengthDesc = (Token tokenOne, Token tokenTwo) -> {
-        int difference = tokenOne.str.length() - tokenTwo.str.length();
+        int difference = tokenOne.getData().length() - tokenTwo.getData().length();
         return ((difference == 0) ? tokenOne.compareTo(tokenTwo) : -difference);
     };
 
