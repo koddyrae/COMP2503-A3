@@ -82,7 +82,7 @@ public class Token implements Comparable<Token> {
      * length they are sorted alphabetically.
      */
     public static Comparator<Token> CompLengthDesc = (Token tokenOne, Token tokenTwo) -> {
-        int difference = tokenOne.getData().length() - tokenTwo.getData().length();
+        int difference = tokenOne.toString().length() - tokenTwo.toString().length();
         return ((difference == 0) ? tokenOne.compareTo(tokenTwo) : -difference);
     };
 
