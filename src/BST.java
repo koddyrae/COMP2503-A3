@@ -13,7 +13,7 @@ import java.util.Queue;
  * received out of order, and the tree will be constructed appropriately,
  * though naively.
  */
-public class BST<T extends Comparable<T>> {
+public class BST<T extends Comparable<T>> implements Iterator {
     private BSTNode root = null;
     private int size = 0;
     // @FunctionalInterface, so the field (some data) can be called (applied, in LISP parlance) as a method later.
@@ -72,8 +72,12 @@ public class BST<T extends Comparable<T>> {
         }
     }
 
-    public void delete(T nodeToAdd) {
-        //TODO:
+    /**
+     * @author Bryce Carson
+     */
+    public T delete(T t) {
+            // TODO:
+            return null;
     }
 
     public T find(T nodeToFind) {
@@ -112,38 +116,65 @@ public class BST<T extends Comparable<T>> {
         return h;
     }
 
-    public Iterator<T> iterator() {
-        //TODO:
-        return null;
+    // NOTE: this should be how it is done, according to https://stackoverflow.com/questions/50329874/how-to-iterate-over-alternative-elements-using-an-iterator and https://www.baeldung.com/java-iterator-vs-iterable.
+    // :shrug: I think; this is totally untested and only written in GitHub.dev, so I don't have any IntelliSense or langauge server features yelling at me when I make mistakes.
+    public class LevelOrderIterator<T> implements Iterator<T> {
+
+        private Queue<T> returnQueue = new LinkedList<>();
+
+        public levelOrderTraversal(BSTNode r) {
+            if (r == null) {
+                return;
+            }
+
+            Queue<BSTNode> queue = new LinkedList<>();
+            queue.add(r);
+
+            while (!queue.isEmpty()) {
+                BSTNode curr = queue.remove();
+                
+                // Provide the data to the iterator.
+                this.returnQueue.add(curr);
+
+                if (curr.getLeft() != null) {
+                    queue.add(curr.getLeft());
+                }
+                if (curr.getRight() != null) {
+                    queue.add(curr.getRight());
+                }
+            }
+        }
+
+        public boolean hasNext() {
+            return !returnQueue.isEmpty();
+        }
+
+        public T next() {
+            return returnQueue.remove();
+        }
     }
 
-    //Not sure if we even need these but i think its good to keep them in here in case
-    private void visit(BSTNode node) {
-        //Cant have print statements so need another way to do this with iterator
-        //TODO:
-    }
-
-    private void levelOrderTraversal(BSTNode r) {
-        if (r == null) {
+    // TODO: convert to an public inner class like the LevelOrderIterator above.
+    private void preOrderTraversal(BSTNode n) {
+        if (n == null) {
             return;
+        } else {
+            visit(n);
+            preOrderTraversal(n.getLeft());
+            preOrderTraversal(n.getRight());
         }
-
-        Queue<BSTNode> queue = new LinkedList<>();
-        queue.add(r);
-
-        while (!queue.isEmpty()) {
-            BSTNode curr = queue.remove();
-            visit(curr);
-
-            if (curr.getLeft() != null) {
-                queue.add(curr.getLeft());
-            }
-            if (curr.getRight() != null) {
-                queue.add(curr.getRight());
-            }
-        }
-
-    }
+	}
+	
+    // TODO: convert to an public inner class like the LevelOrderIterator above.
+	private void postOrderTraversal(BSTNode n) {
+	    if (n == null) {
+	        return;
+	    } else {
+	        postOrderTraversal(n.getLeft());
+	        postOrderTraversal(n.getRight());
+	        visit(n);
+	    }
+	}
 
     class BSTNode implements Comparable<BSTNode> {
         private T data;
