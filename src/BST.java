@@ -147,13 +147,18 @@ public class BST<T extends Comparable<T>> implements Iterator {
 
         private Queue<T> returnQueue = new LinkedList<>();
 
-        public levelOrderTraversal(BSTNode r) {
-            if (r == null) {
+        public LevelOrderIterator() {
+            if (this.root == null) {
+                // The root node is null, so the returnQueue remains empty;
+                // hasNext() will report false, and next() will throw an exception
+                // per convention.
                 return;
             }
 
             Queue<BSTNode> queue = new LinkedList<>();
-            queue.add(r);
+            
+            // Add the root of the tree to the queue to begin the iterative processing.
+            queue.add(this.root);
 
             while (!queue.isEmpty()) {
                 BSTNode curr = queue.remove();

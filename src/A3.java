@@ -42,12 +42,19 @@ public class A3
        System.out.println("Unique Words: " + wordsByNaturalOrder.size()); 
        System.out.println("Stop Words: " + stopwordcount);
        System.out.println();
-       System.out.println("10 Most Frequent");
-       
+       System.out.println("10 Most Frequent"); 
+
        /* TODO:
-        * Use an iterator to traverse the wordsByFreqDesc in-order, and print the first 10
+        * FIXME: CHANGE THE ITERATOR TO THE IN-ORDER ITERATOR ONCE IT HAS BEEN CREATED.
         */
-       
+       Iterator wordsByFreqDescInOrder = new BST.LevelOrderIterator();
+       int i = 10;
+       while ((i > 0) && wordsByFreqDescInOrder.hasNext()) {
+         --i; // Decrement the sentinel.
+         Token t = wordsByFreqDescInOrder.next();
+         // FIXME: TODO: ENSURE THAT THE ORDER OF THESE DATA ARE CORRECT; IS IT WORD:FREQUENCY:LENGTH?
+         System.out.println(t + ":" + t.getCount() + ":" + t.toString().length());
+       }
 
        System.out.println();
        System.out.println("10 Longest");
