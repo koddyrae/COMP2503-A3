@@ -3,29 +3,28 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
-//Used the lab 7 skeleton code for BST class
-
+/**
+ * @author Bryce, Koddy, Nandan
+ * This generalized binary search tree is able to be initialized with a
+ * Comparator, which will thus control the order elements are added to
+ * the tree. Elements will thus be added in-order, in a trivial,
+ * non-balancing manner. They will not, hopefully, be added in a sorted
+ * order, or the tree will be degenerate. Hopefully the elements will be
+ * received out of order, and the tree will be constructed appropriately,
+ * though naively.
+ */
 public class BST<T extends Comparable<T>> {
-    private BSTNode root;
-    private int size;
-
-    /**
-     * Default Constructor for a BST
-     */
-    public BST() {
-        root = null;
-        size = 0;
-    }
-
-    //The sorting of the bst happens here???
-    //brain dont understand this :(
+    private BSTNode root = null;
+    private int size = 0;
+    // @FunctionalInterface, so the field (some data) can be called (applied, in LISP parlance) as a method later.
+    private Comparator<T> cmp = Comparator.NaturalOrder();
 
     /**
      * Constructor for a BST that contains a comparator for ordering
      * @param comparator the desired comparator used
      */
     public BST(Comparator<T> comparator) {
-        //TODO:
+        cmp = comparator;
     }
 
     /**
@@ -34,11 +33,16 @@ public class BST<T extends Comparable<T>> {
      */
     public void add(T data) {
         BSTNode n = new BSTNode(data);
+
+        // If the tree is empty, make the node the root of the tree.
         if (root == null) {
             root = n;
         } else {
             add(root, n);
         }
+
+        // Increment the size of the tree in this basal method so that it is
+        // not forgotten or done incorrectly the recursive method [add(BSTNode, BSTNode)].  
         size++;
     }
 
@@ -48,9 +52,9 @@ public class BST<T extends Comparable<T>> {
      * @param nodeToAdd the node being added
      */
     private void add(BSTNode root, BSTNode nodeToAdd) {
-        int c = nodeToAdd.compareTo(root);
+        int comparison = cmp(root, nodeToAdd);
 
-        if (c < 0) {
+        if (comparison < 0) {
             if (root.getLeft() == null) {
                 root.setLeft(nodeToAdd);
             }
@@ -58,18 +62,13 @@ public class BST<T extends Comparable<T>> {
                 add(root.getLeft(), nodeToAdd);
             }
         }
-        else if (c > 0) {
+        else (comparison > 0) {
             if (root.getRight() == null) {
                 root.setRight(nodeToAdd);
             }
             else {
                 add(root.getRight(), nodeToAdd);
             }
-        }
-        else {
-            //Not sure how to deal with duplicates atm (probably increments frequency in assignment)
-            //TODO:
-            return;
         }
     }
 
