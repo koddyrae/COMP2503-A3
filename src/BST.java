@@ -75,10 +75,49 @@ public class BST<T extends Comparable<T>> implements Iterator {
     /**
      * @author Bryce Carson
      */
-    public T delete(T t) {
-            // TODO:
-            return null;
+
+    // Dk if this works
+    public T delete(T data) {
+    root = delete(root, data);
+    return data;
+}
+
+private BSTNode delete(BSTNode root, T data) {
+    if (root == null) {
+        return root;
     }
+
+    int comparison = cmp.compare(data, root.getData());
+
+    if (comparison < 0) {
+        root.setLeft(delete(root.getLeft(), data));
+    } else if (comparison > 0) {
+        root.setRight(delete(root.getRight(), data));
+    } else {
+        // Node with the key is found
+
+        if (root.getCount() > 1) {
+            root.decrementCount(); // Decrease frequency for duplicates
+        } else {
+            // Node with only one occurrence or no occurrence
+
+            if (root.getLeft() == null) {
+                return root.getRight();
+            } else if (root.getRight() == null) {
+                return root.getLeft();
+            }
+
+            // Node with two children: get the inorder successor (smallest
+            // in the right subtree)
+            root.setData(minimumNode(root.getRight()).getData());
+
+            // Delete the inorder successor
+            root.setRight(delete(root.getRight(), root.getData()));
+        }
+    }
+
+    return root;
+}
 
     public T find(T t) {
         return find(t, root);
