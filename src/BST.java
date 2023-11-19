@@ -1,11 +1,8 @@
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * @author Bryce, Koddy, Nandan
- * This generalized binary search tree is able to be initialized with a
+ * This generalized binary search tree is initialized with a
  * Comparator, which will thus control the order elements are added to
  * the tree. Elements will thus be added in-order, in a trivial,
  * non-balancing manner. They will not, hopefully, be added in a sorted
@@ -13,11 +10,13 @@ import java.util.Queue;
  * received out of order, and the tree will be constructed appropriately,
  * though naively.
  */
-public class BST<T extends Comparable<T>> implements Iterator {
+public class BST<T extends Comparable<T>> {
     private BSTNode root = null;
     private int size = 0;
-    // @FunctionalInterface, so the field (some data) can be called (applied, in LISP parlance) as a method later.
-    private Comparator<T> cmp = Comparator.NaturalOrder();
+    private Comparator<T> cmp;
+    private Stack<BSTNode> path = new Stack<>();
+    // A node which is orphaned when the minimum of a right-subtree has a right child. It is promoted to its parents position.
+    private BSTNode orphan = null;
 
     /**
      * Constructor for a BST that contains a comparator for ordering
@@ -25,6 +24,9 @@ public class BST<T extends Comparable<T>> implements Iterator {
      */
     public BST(Comparator<T> comparator) {
         cmp = comparator;
+    }
+    public BST() {
+        cmp = Comparator.naturalOrder();
     }
 
     /**
@@ -52,8 +54,9 @@ public class BST<T extends Comparable<T>> implements Iterator {
      * @param nodeToAdd the node being added
      */
     private void add(BSTNode root, BSTNode nodeToAdd) {
-        int comparison = cmp(root, nodeToAdd);
+        int comparison = cmp.compare(root.getData(), nodeToAdd.getData());
 
+        // There should never be a case where the comparison is equal, so it's not dealt with here.
         if (comparison < 0) {
             if (root.getLeft() == null) {
                 root.setLeft(nodeToAdd);
@@ -62,7 +65,7 @@ public class BST<T extends Comparable<T>> implements Iterator {
                 add(root.getLeft(), nodeToAdd);
             }
         }
-        else (comparison > 0) {
+        else if (comparison > 0) {
             if (root.getRight() == null) {
                 root.setRight(nodeToAdd);
             }
@@ -75,88 +78,129 @@ public class BST<T extends Comparable<T>> implements Iterator {
     /**
      * @author Bryce Carson
      */
+    public void delete(T t) {
+        // Recall that find has the side effect of setting `path`.
+        if (find(t) == t) {
+            int children = 0;
+            if (path.peek().getLeft() != null) children++;
+            if (path.peek().getRight() != null) children++;
 
-    // Dk if this works
-    public T delete(T data) {
-    root = delete(root, data);
-    return data;
-}
+            BSTNode child, leftChild, rightChild, target, parent, grandparent, minimum;
 
-private BSTNode delete(BSTNode root, T data) {
-    if (root == null) {
-        return root;
-    }
+            switch(children) {
+                case 1:
+                    child = ((path.peek().getLeft() == null) ? path.peek().getRight() : path.peek().getLeft());
 
-    int comparison = cmp.compare(data, root.getData());
+                    if (path.peek() == root) {
+                        root = child;
+                    }
 
-    if (comparison < 0) {
-        root.setLeft(delete(root.getLeft(), data));
-    } else if (comparison > 0) {
-        root.setRight(delete(root.getRight(), data));
-    } else {
-        // Node with the key is found
+                    target = path.pop();
+                    grandparent = path.pop();
 
-        if (root.getCount() > 1) {
-            root.decrementCount(); // Decrease frequency for duplicates
-        } else {
-            // Node with only one occurrence or no occurrence
+                    if ((grandparent.getLeft() == target)) {
+                        grandparent.setLeft(child);
+                    } else {
+                        grandparent.setRight(child);
+                    }
 
-            if (root.getLeft() == null) {
-                return root.getRight();
-            } else if (root.getRight() == null) {
-                return root.getLeft();
+                    break;
+                case 2:
+                    target = path.pop();
+                    grandparent = path.pop(); // Null when target == root.
+                    leftChild = target.getLeft();
+                    rightChild = target.getRight();
+                    minimum = minimum(rightChild);
+
+                    if (target == root) {
+                        // Orphanage and adoption potentially occurs in this case; if the orphan is not null, then the
+                        // orphan's grandparent adopts it to it's left.
+                        minimum.setLeft(leftChild);
+                        minimum.setRight(rightChild);
+                        root = minimum;
+                        if (orphan != null) {
+                            BSTNode orphan = this.orphan;
+                            minimum(rightChild).setLeft(orphan); // Acquire the grandparent of the orphan.
+                            this.orphan = null; // Nullify unintended side-effect.
+                        }
+                    } else {
+                        // Recall that minimum sets this.orphan; this is irrelevant when the node being removed is not
+                        // root.
+                        grandparent.setRight(minimum(rightChild).setLeft(leftChild));
+                    }
+
+                    break;
+                case 0:
+                default:
+                    if (path.peek() == root) { root = null; break; } // Break early, there's no parent who disowns.
+                    target = path.pop();
+                    parent = path.pop();
+
+                    // Finally delete the node by de-referencing the proper child of the parent (disown the child).
+                    if (parent.getRight() == target) parent.setRight(null);
+                    if (parent.getLeft() == target) parent.setLeft(null);
+
+                    // Stop switching.
+                    break;
             }
 
-            // Node with two children: get the inorder successor (smallest
-            // in the right subtree)
-            root.setData(minimumNode(root.getRight()).getData());
-
-            // Delete the inorder successor
-            root.setRight(delete(root.getRight(), root.getData()));
+            path.empty(); // The path has been modified, so it must be emptied before any other operations may occur.
         }
     }
 
-    return root;
-}
-
     public T find(T t) {
-        return find(t, root);
+        // Modify the path in our search for the element.
+        find(t, root);
+
+        // Return the data, if found.
+        if (!path.isEmpty()) {
+            return path.peek().getData();
+        } else {
+            // If data is not found, the private find method empties path.
+            return null;
+        }
     }
 
     // This is quite dependent on the equality of the types being compared. If
     // they are simple base types, it is fine; for the Token class, the tokens
     // must be equal based on their string contents.
-    private T find(T t, BSTNode n) {
+    private void find(T t, BSTNode n) {
+        this.path.push(n);
         int c = n.getData().compareTo(t);
 
-        // Base case, the node that this call was made with is what we're searching for.
-        if (c == 0) {
-            // The data was found at this node, so we return it.
-            // NOTE: it is *imperative* that the argument t is not returned,
-            // because it was never entered into the tree. The existing data
-            // must be returned so that it can be modified if necessary by
-            // the caller.
-            return n.getData();
-        } else if ((c < 0) && (n.getLeft() != null)) {
+        /* The base case---in which the node that this call was made with is what
+         *  we're searching for---has no clause, and as the condition is otherwise
+         *  an empty if statement; the final if statement is protected as <i>not</i>
+         *  being the node we are searching for. The void method simply exits without
+         *  returning anything, but having modified the <code>path</code> suitably.
+         */
+        if ((c < 0) && (n.getLeft() != null)) {
             // The data should be found to the left of the current node.
-            return find(t, n.getLeft());
+            find(t, n.getLeft());
         } else if ((c > 0) && (n.getRight() != null)) {
             // The data should be found to the right of the current node.
-            return find(t, n.getRight());
-        } else {
-            // The data was not found at any node in the tree.
-            return null;
+            find(t, n.getRight());
+        } else if (c != 0){
+            // Empty the path because no element in the tree contains the data searched for.
+            path.empty();
         }
     }
 
-    public T minimumNode() {
-        return minimumNode(root);
+    // Calling this method sets this.orphan, but the node is not actually orphaned.
+    public T minimum() {
+        return minimum(root).getData();
     }
 
-    private T  minimumNode(BSTNode n) {
-        // Either the curent node n is the smallest node, because it has no
+    // Calling this method sets this.orphan, but the node is not actually orphaned.
+    private BSTNode minimum(BSTNode n) {
+        // Either the current node n is the smallest node, because it has no
         // lesser node, or the method needs to recurse.
-        return ((n.getLeft() == null) ? n : minimumNode(n.getLeft()));
+        if ((n.getLeft() != null)) {
+            return minimum(n.getLeft()); // Tail-recurse
+        } else {
+            this.orphan = n.getRight();
+            return n; // The minimum in the subtree.
+        }
     }
 
     public int size() {
@@ -181,29 +225,33 @@ private BSTNode delete(BSTNode root, T data) {
     }
 
     // NOTE: this should be how it is done, according to https://stackoverflow.com/questions/50329874/how-to-iterate-over-alternative-elements-using-an-iterator and https://www.baeldung.com/java-iterator-vs-iterable.
-    // :shrug: I think; this is totally untested and only written in GitHub.dev, so I don't have any IntelliSense or langauge server features yelling at me when I make mistakes.
-    public class LevelOrderIterator<T> implements Iterator<T> {
+    // :shrug: I think; this is totally untested and only written in GitHub.dev, so I don't have any IntelliSense or language server features yelling at me when I make mistakes.
+    // SEE: https://stackoverflow.com/questions/70324/java-inner-class-and-static-nested-class
+    public static class LevelOrderIterator<T extends Comparable<T>> implements Iterator<T> {
 
-        private Queue<T> returnQueue = new LinkedList<>();
+        // Non-static; it is very important that there are no static fields in this static nested class; every iterator
+        // is its own object and needs to be so, such that the typeQueue relates to a specific iteration, not the whole
+        // class of Iterators!
+        private Queue<T> typeQueue = new LinkedList<>();
 
-        public LevelOrderIterator() {
-            if (this.root == null) {
+        public LevelOrderIterator(BST<T> tree) {
+            if (tree.root == null) {
                 // The root node is null, so the returnQueue remains empty;
                 // hasNext() will report false, and next() will throw an exception
                 // per convention.
                 return;
             }
 
-            Queue<BSTNode> queue = new LinkedList<>();
+            Queue<BST<T>.BSTNode> queue = new LinkedList<>();
             
             // Add the root of the tree to the queue to begin the iterative processing.
-            queue.add(this.root);
+            queue.add(tree.root);
 
             while (!queue.isEmpty()) {
-                BSTNode curr = queue.remove();
+                BST<T>.BSTNode curr = queue.remove();
                 
                 // Provide the data to the iterator.
-                this.returnQueue.add(curr);
+                this.typeQueue.add(curr.getData());
 
                 if (curr.getLeft() != null) {
                     queue.add(curr.getLeft());
@@ -215,19 +263,17 @@ private BSTNode delete(BSTNode root, T data) {
         }
 
         public boolean hasNext() {
-            return !returnQueue.isEmpty();
+            return !typeQueue.isEmpty();
         }
 
         public T next() {
-            return returnQueue.remove();
+            return typeQueue.remove();
         }
     }
 
     // TODO: convert to an public inner class like the LevelOrderIterator above.
     private void preOrderTraversal(BSTNode n) {
-        if (n == null) {
-            return;
-        } else {
+        if (n != null) {
             visit(n);
             preOrderTraversal(n.getLeft());
             preOrderTraversal(n.getRight());
@@ -236,9 +282,7 @@ private BSTNode delete(BSTNode root, T data) {
 	
     // TODO: convert to an public inner class like the LevelOrderIterator above.
 	private void postOrderTraversal(BSTNode n) {
-	    if (n == null) {
-	        return;
-	    } else {
+        if (n != null) {
 	        postOrderTraversal(n.getLeft());
 	        postOrderTraversal(n.getRight());
 	        visit(n);
@@ -264,12 +308,16 @@ private BSTNode delete(BSTNode root, T data) {
             data = d;
         }
 
-        public void setLeft(BSTNode l) {
+        // Returns this.
+        public BSTNode setLeft(BSTNode l) {
             left = l;
+            return this;
         }
 
-        public void setRight(BSTNode r) {
+        // Returns this.
+        public BSTNode setRight(BSTNode r) {
             right = r;
+            return this;
         }
 
         public BSTNode getLeft() {
@@ -286,6 +334,10 @@ private BSTNode delete(BSTNode root, T data) {
 
         public int compareTo(BSTNode o) {
             return this.getData().compareTo(o.getData());
+        }
+
+        public int compareTo(T t) {
+            return this.getData().compareTo(t);
         }
     }
 }
