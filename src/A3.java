@@ -102,6 +102,12 @@ public class A3
         	 // TODO:
       		 // Create a new token object, if not already in the wordsByNaturalOrder, 
      		 // add the token to the BST, otherwise, increase the frequency count of the object already in the tree.
+		 Token token = new Token(word);
+                if (wordsByNaturalOrder.find(token) == null) {
+                    wordsByNaturalOrder.add(token);
+                } else {
+                    wordsByNaturalOrder.find(token).incrementCount();
+                }
          }
       }
    }
