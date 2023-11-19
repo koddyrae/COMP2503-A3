@@ -93,6 +93,7 @@ public class BST<T extends Comparable<T>> {
 
                     if (path.peek() == root) {
                         root = child;
+                        break;
                     }
 
                     target = path.pop();
