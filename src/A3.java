@@ -145,10 +145,13 @@ public class A3
    {
 	   //FIXME: Still need to test if this works so might need to rework around it
        BST.LevelOrderIterator<Token> iterator = new BST.LevelOrderIterator<>(wordsByNaturalOrder);
-       for (String word : stopwords) {
-           Token temp = new Token(word);
-           if (iterator.next().equals(temp)) {
-               wordsByNaturalOrder.delete(temp);
+       while (iterator.hasNext()) {
+           Token curr = iterator.next();
+           for (String word : stopwords) {
+               Token temp = new Token(word);
+               if (curr.equals(temp)) {
+                   wordsByNaturalOrder.delete(temp);
+               }
            }
        }
    }
