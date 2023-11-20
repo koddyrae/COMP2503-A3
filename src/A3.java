@@ -49,10 +49,10 @@ public class A3
        Iterator<Token> wordsByFreqDescInOrder = new BST.InOrderIterator<>(wordsByFreqDesc);
        int i = 10;
        while ((i > 0) && wordsByFreqDescInOrder.hasNext()) {
-         --i; // Decrement the sentinel.
-         Token t = wordsByFreqDescInOrder.next();
-         // FIXME: TODO: ENSURE THAT THE ORDER OF THESE DATA ARE CORRECT; IS IT WORD:FREQUENCY:LENGTH?
-         System.out.println(t + ":" + t.getCount() + ":" + t.toString().length());
+           --i; // Decrement the sentinel.
+           Token t = wordsByFreqDescInOrder.next();
+           // DONE: Whenever you print a Token, print the word, its length, and the number of times it occurred, separated by colons.
+           System.out.println(t + ":" + t.toString().length() + ":" + t.getCount());
        }
 
        System.out.println();
