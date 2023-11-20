@@ -44,10 +44,7 @@ public class A3
        System.out.println();
        System.out.println("10 Most Frequent"); 
 
-       /* TODO:
-        * FIXME: CHANGE THE ITERATOR TO THE IN-ORDER ITERATOR ONCE IT HAS BEEN CREATED.
-        */
-       Iterator wordsByFreqDescInOrder = new BST.LevelOrderIterator();
+       Iterator<Token> wordsByFreqDescInOrder = new BST.InOrderIterator<>(wordsByFreqDesc);
        int i = 10;
        while ((i > 0) && wordsByFreqDescInOrder.hasNext()) {
          --i; // Decrement the sentinel.
@@ -64,7 +61,7 @@ public class A3
         */
 
        System.out.println();
-       System.out.println("The longest word is " + wordsByLength.min());
+       System.out.println("The longest word is " + wordsByLength.minimum());
        System.out.println("The average word length is " + avgLength());
        System.out.println();        
        System.out.println("All");
@@ -88,28 +85,25 @@ public class A3
    
    /* Read the file and add words to the list/tree. 
     */
-   private void readFile() 
-   {
-	   // some starter code for this method is provided:
-	   
-      while (inp.hasNext()) 
-      {
-         // get the next word, convert to lower case, strip out blanks and non-alphabetic characters.
-         String word = inp.next().toLowerCase().trim().replaceAll("[^a-z]","");
+   private void readFile() {
+       // some starter code for this method is provided:
 
-         if (word.length() > 0) 
-         { 
-        	 // TODO:
-      		 // Create a new token object, if not already in the wordsByNaturalOrder, 
-     		 // add the token to the BST, otherwise, increase the frequency count of the object already in the tree.
-		 Token token = new Token(word);
-                if (wordsByNaturalOrder.find(token) == null) {
-                    wordsByNaturalOrder.add(token);
-                } else {
-                    wordsByNaturalOrder.find(token).incrementCount();
-                }
-         }
-      }
+       while (inp.hasNext()) {
+           // get the next word, convert to lower case, strip out blanks and non-alphabetic characters.
+           String word = inp.next().toLowerCase().trim().replaceAll("[^a-z]", "");
+
+           if (word.length() > 0) {
+               // TODO:
+               // Create a new token object, if not already in the wordsByNaturalOrder,
+               // add the token to the BST, otherwise, increase the frequency count of the object already in the tree.
+               Token token = new Token(word);
+               if (wordsByNaturalOrder.find(token) == null) {
+                   wordsByNaturalOrder.add(token);
+               } else {
+                   wordsByNaturalOrder.find(token).incrementCount();
+               }
+           }
+       }
    }
 
    /* Create the frequency and length lists. */
