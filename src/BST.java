@@ -225,16 +225,30 @@ public class BST<T extends Comparable<T>> {
         return ( (r == null) ? -1 : (1 + Math.max(height(r.getLeft()), height(r.getRight()))) );
     }
 
-    // NOTE: this should be how it is done, according to https://stackoverflow.com/questions/50329874/how-to-iterate-over-alternative-elements-using-an-iterator and https://www.baeldung.com/java-iterator-vs-iterable.
-    // :shrug: I think; this is totally untested and only written in GitHub.dev, so I don't have any IntelliSense or language server features yelling at me when I make mistakes.
-    // SEE: https://stackoverflow.com/questions/70324/java-inner-class-and-static-nested-class
+
+    /**
+     * NOTE: this should be how it is done, according to
+     * https://stackoverflow.com/questions/50329874/how-to-iterate-over-alternative-elements-using-an-iterator
+     * and https://www.baeldung.com/java-iterator-vs-iterable.
+     * :shrug: I think; this is totally untested and only written in GitHub.dev, so I
+     * don't have any IntelliSense or language server features yelling at me when I make
+     * mistakes. SEE:
+     * https://stackoverflow.com/questions/70324/java-inner-class-and-static-nested-class
+     * @author Bryce Carson
+     * @param <T> Any comparable type, which will invariably be the same type as the enclosing class.
+     */
     public static class LevelOrderIterator<T extends Comparable<T>> implements Iterator<T> {
 
-        // Non-static; it is very important that there are no static fields in this static nested class; every iterator
-        // is its own object and needs to be so, such that the typeQueue relates to a specific iteration, not the whole
-        // class of Iterators!
+        /*
+         Non-static; it is very important that there are no static fields in this static nested class; every iterator
+         is its own object and needs to be so, such that the typeQueue relates to a specific iteration, not the whole
+         class of Iterators!
+        */
         private Queue<T> typeQueue = new LinkedList<>();
 
+        /** Initialize a new Iterator for a tree.
+         * @param tree The tree to iterate over.
+         */
         public LevelOrderIterator(BST<T> tree) {
             if (tree.root == null) {
                 // The root node is null, so the returnQueue remains empty;
@@ -272,23 +286,75 @@ public class BST<T extends Comparable<T>> {
         }
     }
 
-    // TODO: convert to an public inner class like the LevelOrderIterator above.
-    private void preOrderTraversal(BSTNode n) {
-        if (n != null) {
-            visit(n);
-            preOrderTraversal(n.getLeft());
-            preOrderTraversal(n.getRight());
+    /**
+     * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
+     */
+    private static class PreOrderTraversal<T extends Comparable<T>> implements Iterator<T> {
+        private Queue<T> typeQueue = new LinkedList<>();
+
+        PreOrderTraversal(BST<T> tree) {
+            preOrderTraversal(tree.root);
         }
-	}
-	
-    // TODO: convert to an public inner class like the LevelOrderIterator above.
-	private void postOrderTraversal(BSTNode n) {
-        if (n != null) {
-	        postOrderTraversal(n.getLeft());
-	        postOrderTraversal(n.getRight());
-	        visit(n);
-	    }
-	}
+
+        private void preOrderTraversal(BST<T>.BSTNode n) {
+            if (n != null) {
+                this.typeQueue.add(n.getData());
+                preOrderTraversal(n.getLeft());
+                preOrderTraversal(n.getRight());
+            }
+        }
+
+        /**
+         * @return 
+         */
+        @Override
+        public boolean hasNext() {
+            return !typeQueue.isEmpty();
+        }
+
+        /**
+         * @return T the next element in the Tree.
+         */
+        @Override
+        public T next() {
+            return typeQueue.remove();
+        }
+    }
+
+    /**
+     * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
+     */
+    private static class PostOrderTraversal<T extends Comparable<T>> implements Iterator<T> {
+        private Queue<T> typeQueue = new LinkedList<>();
+
+        PostOrderTraversal(BST<T> tree) {
+            preOrderTraversal(tree.root);
+        }
+
+        private void preOrderTraversal(BST<T>.BSTNode n) {
+            if (n != null) {
+                preOrderTraversal(n.getLeft());
+                preOrderTraversal(n.getRight());
+                this.typeQueue.add(n.getData());
+            }
+        }
+
+        /**
+         * @return
+         */
+        @Override
+        public boolean hasNext() {
+            return !typeQueue.isEmpty();
+        }
+
+        /**
+         * @return T the next element in the Tree.
+         */
+        @Override
+        public T next() {
+            return typeQueue.remove();
+        }
+    }
 
     class BSTNode implements Comparable<BSTNode> {
         private T data;
