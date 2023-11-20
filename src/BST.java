@@ -13,8 +13,8 @@ import java.util.*;
 public class BST<T extends Comparable<T>> {
     private BSTNode root = null;
     private int size = 0;
-    private Comparator<T> cmp;
-    private Stack<BSTNode> path = new Stack<>();
+    private final Comparator<T> cmp;
+    private final Stack<BSTNode> path = new Stack<>();
     // A node which is orphaned when the minimum of a right-subtree has a right child. It is promoted to its parents position.
     private BSTNode orphan = null;
 
@@ -236,7 +236,7 @@ public class BST<T extends Comparable<T>> {
          is its own object and needs to be so, such that the typeQueue relates to a specific iteration, not the whole
          class of Iterators!
         */
-        private Queue<T> typeQueue = new LinkedList<>();
+        private final Queue<T> typeQueue = new LinkedList<>();
 
         /** Initialize a new Iterator for a tree.
          * @param tree The tree to iterate over.
@@ -281,10 +281,10 @@ public class BST<T extends Comparable<T>> {
     /**
      * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
      */
-    private static class PreOrderTraversal<T extends Comparable<T>> implements Iterator<T> {
-        private Queue<T> typeQueue = new LinkedList<>();
+    private static class PreOrderIterator<T extends Comparable<T>> implements Iterator<T> {
+        private final Queue<T> typeQueue = new LinkedList<>();
 
-        PreOrderTraversal(BST<T> tree) {
+        PreOrderIterator(BST<T> tree) {
             preOrderTraversal(tree.root);
         }
 
@@ -297,7 +297,7 @@ public class BST<T extends Comparable<T>> {
         }
 
         /**
-         * @return 
+         * @return A boolean describing whether there are elements left to traverse.
          */
         @Override
         public boolean hasNext() {
@@ -316,10 +316,10 @@ public class BST<T extends Comparable<T>> {
     /**
      * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
      */
-    private static class PostOrderTraversal<T extends Comparable<T>> implements Iterator<T> {
-        private Queue<T> typeQueue = new LinkedList<>();
+    private static class PostOrderIterator<T extends Comparable<T>> implements Iterator<T> {
+        private final Queue<T> typeQueue = new LinkedList<>();
 
-        PostOrderTraversal(BST<T> tree) {
+        PostOrderIterator(BST<T> tree) {
             postOrderTraversal(tree.root);
         }
 
@@ -332,7 +332,7 @@ public class BST<T extends Comparable<T>> {
         }
 
         /**
-         * @return
+         * @return A boolean describing whether there are elements left to traverse.
          */
         @Override
         public boolean hasNext() {
@@ -351,10 +351,10 @@ public class BST<T extends Comparable<T>> {
     /**
      * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
      */
-    private static class InOrderTraversal<T extends Comparable<T>> implements Iterator<T> {
-        private Queue<T> typeQueue = new LinkedList<>();
+    private static class InOrderIterator<T extends Comparable<T>> implements Iterator<T> {
+        private final Queue<T> typeQueue = new LinkedList<>();
 
-        InOrderTraversal(BST<T> tree) {
+        InOrderIterator(BST<T> tree) {
             inOrderTraversal(tree.root);
         }
 
@@ -367,7 +367,7 @@ public class BST<T extends Comparable<T>> {
         }
 
         /**
-         * @return
+         * @return A boolean describing whether there are elements left to traverse.
          */
         @Override
         public boolean hasNext() {
