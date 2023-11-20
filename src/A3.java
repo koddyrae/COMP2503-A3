@@ -58,9 +58,13 @@ public class A3
        System.out.println();
        System.out.println("10 Longest");
 
-       /* TODO:
-        * Use an iterator to traverse the wordsByLength in-order, and print the first 10
-        */
+       Iterator<Token> wordsByLengthInOrder = new BST.InOrderIterator<>(wordsByLength);
+       while ((i > 0) && wordsByLengthInOrder.hasNext()) {
+           --i;
+           Token t = wordsByLengthInOrder.next();
+           System.out.println(t + ":" + t.toString().length() + ":" + t.getCount());
+       }
+
 
        System.out.println();
        System.out.println("The longest word is " + wordsByLength.minimum());
@@ -68,9 +72,11 @@ public class A3
        System.out.println();        
        System.out.println("All");
 
-       /* TODO:
-        * Use an iterator to traverse the wordsByNaturalOrder in-order, and print all elements in the tree
-        */
+       Iterator<Token> wordsByNaturalOrderInOrder = new BST.InOrderIterator<>(wordsByNaturalOrder);
+       while (wordsByNaturalOrderInOrder.hasNext()) {
+           Token t = wordsByNaturalOrderInOrder.next();
+           System.out.println(t + ":" + t.toString().length() + ":" + t.getCount());
+       }
 
        System.out.println();
        
@@ -132,14 +138,23 @@ public class A3
 	   return 0;
    }
 
-   /* Remove stop words from the tree. */
+    /**
+     * Method to check and remove the array of stop words from the BST if present.
+     */
    private static void removeStop()
    {
-	   // TODO:
+	   //FIXME: Still need to test if this works so might need to rework around it
+       BST.LevelOrderIterator<Token> iterator = new BST.LevelOrderIterator<>(wordsByNaturalOrder);
+       for (String word : stopwords) {
+           Token temp = new Token(word);
+           if (iterator.next().equals(temp)) {
+               wordsByNaturalOrder.delete(temp);
+           }
+       }
    }
 
-   /* Calculate the optimal height for a tree of size n. 
-      Round to an int. 
+   /** Method to calculate the optimal height for a tree of size n.
+    *  Rounded to an int.
     */
    private static int optHeight(int n)
    {
