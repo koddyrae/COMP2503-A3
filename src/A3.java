@@ -7,12 +7,12 @@ public class A3
 {
    /* The lists (trees) of words. Alphabetic, by Frequency 
       and by length. */
-   private BST<Token> wordsByNaturalOrder = new BST<Token>();
-   private BST<Token> wordsByFreqDesc = new BST<Token>(Token.CompFreqDesc);
-   private BST<Token> wordsByLength = new BST<Token>(Token.CompLengthDesc);
+   private static final BST<Token> wordsByNaturalOrder = new BST<>();
+   private static final BST<Token> wordsByFreqDesc = new BST<>(Token.CompFreqDesc);
+   private static final BST<Token> wordsByLength = new BST<>(Token.CompLengthDesc);
    
    // there are 103 stopwords in this list
-   private String[] stopwords = { 
+   private static final String[] stopwords = {
          "a","about","all","am","an","and","any","are","as","at", 
          "be","been","but","by","can","cannot","could", "did", "do", "does", 
          "else", "for", "from", "get", "got", "had", "has", "have", "he", "her", 
@@ -25,18 +25,20 @@ public class A3
          "man", "woman", "would", "should", "dont", "after", "before", "im", "men"
    };
 
-   private int totalwordcount = 0;
-   private int stopwordcount = 0;
+   private static int totalwordcount = 0;
+   private static int stopwordcount = 0;
 
-   private Scanner inp = new Scanner( System.in);
+   private static final Scanner inp = new Scanner(System.in);
 
-   public static void main( String[ ] args) 
+   public static void main(String[] args)
    {	
-      A3 a3 = new A3();
-      a3.run();
+       readFile();
+       removeStop();
+       createFreqLists();
+       printResults();
    }
 
-   private void printResults() 
+   private static void printResults()
    {
        System.out.println("Total Words: " + totalwordcount);
        System.out.println("Unique Words: " + wordsByNaturalOrder.size()); 
@@ -85,7 +87,7 @@ public class A3
    
    /* Read the file and add words to the list/tree. 
     */
-   private void readFile() {
+   private static void readFile() {
        // some starter code for this method is provided:
 
        while (inp.hasNext()) {
@@ -107,7 +109,7 @@ public class A3
    }
 
    /* Create the frequency and length lists. */
-   private void createFreqLists()
+   private static void createFreqLists()
    {
 	   // TODO:
 	   // Use your implementation of the iterator interface
@@ -120,14 +122,14 @@ public class A3
    }
 
    /* Calculate the average length of words stored the wordsByNaturalOrder tree*/
-   private int avgLength() 
+   private static int avgLength()
    {
 	   // TODO:
 	   return 0;
    }
 
    /* Remove stop words from the tree. */
-   private void removeStop() 
+   private static void removeStop()
    {
 	   // TODO:
    }
@@ -135,21 +137,12 @@ public class A3
    /* Calculate the optimal height for a tree of size n. 
       Round to an int. 
     */
-   private int optHeight(int n) 
+   private static int optHeight(int n)
    {
 	     double h = Math.log(n+1) / Math.log(2) - 1;  
 	     if (Math.round(h) < h)
 	    	  return (int)Math.round(h) + 1;
 	     else
 	    	  return (int)Math.round(h);
-   }
-
-   /* Run the program. */
-   private void run() 
-   {
-      readFile();
-      removeStop();
-      createFreqLists();
-      printResults();
    }
 }
