@@ -229,7 +229,7 @@ public class BST<T extends Comparable<T>> {
     /**
      * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
      */
-    public static class LevelOrderIterator<T extends Comparable<T>> implements Iterator<T> {
+    static class LevelOrderIterator<T extends Comparable<T>> implements Iterator<T> {
 
         /*
          Non-static; it is very important that there are no static fields in this static nested class; every iterator
@@ -281,7 +281,7 @@ public class BST<T extends Comparable<T>> {
     /**
      * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
      */
-    private static class PreOrderIterator<T extends Comparable<T>> implements Iterator<T> {
+    static class PreOrderIterator<T extends Comparable<T>> implements Iterator<T> {
         private final Queue<T> typeQueue = new LinkedList<>();
 
         PreOrderIterator(BST<T> tree) {
@@ -316,7 +316,7 @@ public class BST<T extends Comparable<T>> {
     /**
      * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
      */
-    private static class PostOrderIterator<T extends Comparable<T>> implements Iterator<T> {
+    static class PostOrderIterator<T extends Comparable<T>> implements Iterator<T> {
         private final Queue<T> typeQueue = new LinkedList<>();
 
         PostOrderIterator(BST<T> tree) {
@@ -351,7 +351,7 @@ public class BST<T extends Comparable<T>> {
     /**
      * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
      */
-    private static class InOrderIterator<T extends Comparable<T>> implements Iterator<T> {
+    static class InOrderIterator<T extends Comparable<T>> implements Iterator<T> {
         private final Queue<T> typeQueue = new LinkedList<>();
 
         InOrderIterator(BST<T> tree) {
