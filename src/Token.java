@@ -21,7 +21,7 @@ public class Token implements Comparable<Token> {
     /**
      * An alternative constructor to create a stop word, which aides in removal of the stop word later in the program.
      * @param s The text of the string token.
-     * @param b Whether or not the token is a stop word.
+     * @param b Whether the token is a stop word.
      */
     public Token(String s, boolean b) {
         this.str = s;
@@ -44,6 +44,11 @@ public class Token implements Comparable<Token> {
         ++this.count;
     }
 
+    /**
+     * Override equals method to compare two objects on if they are equal
+     * @param obj object to be compared to calling object
+     * @return b boolean true if equal, false otherwise
+     */
     @Override
     public boolean equals(Object obj) {
         /*
@@ -62,9 +67,9 @@ public class Token implements Comparable<Token> {
         } else return this.str.equals(obj.toString());
     }
 
-    /*
-     * Tokens are not very special, so a standard String comparison is
-     * sufficient. Call the String compareTo method.
+    /**
+     *  Overridden String compareTo method since Tokens are not very special,
+     *  so a standard String comparison is sufficient.
      */
     @Override
     public int compareTo(Token t) {
@@ -73,18 +78,21 @@ public class Token implements Comparable<Token> {
 
     // This comparator will cause Collections.Sort to sort more frequent words first.
     /**
-     * Because more frequent words should be sorted /before/ less
-     * frequent words, the difference should be negative. A word
-     * with a higher frequency will return a positive difference, so
-     * to be sorted first the magnitude needs to be inverted.
+     * Comparator to compare the frequency of two tokens.
      */
     public static Comparator<Token> CompFreqDesc = (Token tokenOne, Token tokenTwo) -> {
+        /*
+        * Because more frequent words should be sorted /before/ less
+        * frequent words, the difference should be negative. A word
+        * with a higher frequency will return a positive difference, so
+        * to be sorted first the magnitude needs to be inverted.
+         */
         int difference = tokenOne.getCount() - tokenTwo.getCount();
         return ((difference == 0) ? tokenOne.compareTo(tokenTwo) : -difference);
     }; // End of assigned lambda expression.
 
     /**
-     * Sort longer words before shorter words, and when two words have the same
+     * Comparator to sort longer words before shorter words, and when two words have the same
      * length they are sorted alphabetically.
      */
     public static Comparator<Token> CompLengthDesc = (Token tokenOne, Token tokenTwo) -> {
