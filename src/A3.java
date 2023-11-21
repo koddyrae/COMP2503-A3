@@ -2,7 +2,9 @@
 import java.util.Scanner;
 import java.util.Iterator;
 
-
+/**
+ * Main class to handle main functionality of the program
+ */
 public class A3 
 {
    /* The lists (trees) of words. Alphabetic, by Frequency 
@@ -30,6 +32,10 @@ public class A3
 
    private static final Scanner inp = new Scanner(System.in);
 
+    /**
+     * Main Method
+     * @param args command lines args
+     */
    public static void main(String[] args)
    {	
        readFile();
@@ -38,6 +44,9 @@ public class A3
        printResults();
    }
 
+    /**
+     * Method to print results of the required trees in desired orders
+     */
    private static void printResults()
    {
        System.out.println("Total Words: " + totalwordcount);
@@ -65,7 +74,6 @@ public class A3
            System.out.println(t + ":" + t.toString().length() + ":" + t.getCount());
        }
 
-
        System.out.println();
        System.out.println("The longest word is " + wordsByLength.minimum());
        System.out.println("The average word length is " + avgLength());
@@ -79,7 +87,6 @@ public class A3
        }
 
        System.out.println();
-       
        System.out.println("Alphabetic Tree: (Optimum Height: " + 
              optHeight(wordsByNaturalOrder.size()) + ") (Actual Height: " 
              + wordsByNaturalOrder.height() + ")");
@@ -91,7 +98,8 @@ public class A3
              + wordsByLength.height() + ")");
    }
    
-   /* Read the file and add words to the list/tree. 
+   /**
+    * Method to read the file and add words to the list/tree.
     */
    private static void readFile() {
        while (inp.hasNext()) {
@@ -118,52 +126,55 @@ public class A3
        }
    }
 
-   /* Create the frequency and length lists. */
-   private static void createFreqLists()
-   {
-	   // TODO:
-	   // Use your implementation of the iterator interface
-	   // for the BST class.
-	   
-	   // Make sure you only add words that have occurred more than twice
-	   // to the tree ordered by word frequency.
-	   
-	   // All words in the original tree must be added to tree ordered by word length
-	   
-    
-    Iterator<Token> iterator = new BST.InOrderIterator<>(wordsByNaturalOrder);
+   /**
+    * Method to create the frequency and length lists.
+    */
+   private static void createFreqLists() {
+       // Use your implementation of the iterator interface
+       // for the BST class.
 
-    // Iterate over the words in the tree
-    while (iterator.hasNext()) {
-        // Get the next token (word) from the iterator
-        Token token = iterator.next();
+       // Make sure you only add words that have occurred more than twice
+       // to the tree ordered by word frequency.
 
-       
-        if (token.getCount() > 2) {
-            // If yes, add the word to the wordsByFreqDesc tree (ordered by frequency)
-            wordsByFreqDesc.add(token);
-        }
+       // All words in the original tree must be added to tree ordered by word length
 
-        // Add the word to the wordsByLength tree (ordered by length)
-        wordsByLength.add(token);
+       Iterator<Token> iterator = new BST.InOrderIterator<>(wordsByNaturalOrder);
+
+       // Iterate over the words in the tree
+       while (iterator.hasNext()) {
+           // Get the next token (word) from the iterator
+           Token token = iterator.next();
+
+           if (token.getCount() > 2) {
+               // If yes, add the word to the wordsByFreqDesc tree (ordered by frequency)
+               wordsByFreqDesc.add(token);
+           }
+
+           // Add the word to the wordsByLength tree (ordered by length)
+           wordsByLength.add(token);
+       }
    }
 
-   /* Calculate the average length of words stored the wordsByNaturalOrder tree*/
-   private static int avgLength()
-{
-    int totalLength = 0;
-    int wordCount = 0;
-    Iterator<Token> iterator = new BST.InOrderIterator<>(wordsByNaturalOrder);
-    // Iterate over the words in the tree
-    while (iterator.hasNext()) {
-        Token token = iterator.next();
-        totalLength += token.toString().length();
-        wordCount += 1;
+   /**
+    * Method to calculate the average length of words stored the wordsByNaturalOrder tree
+    */
+    private static int avgLength()
+    {
+        int totalLength = 0;
+        int wordCount = 0;
+        Iterator<Token> iterator = new BST.InOrderIterator<>(wordsByNaturalOrder);
+
+        // Iterate over the words in the tree
+        while (iterator.hasNext()) {
+            Token token = iterator.next();
+            totalLength += token.toString().length();
+            wordCount += 1;
+        }
+
+        // Calculate and return the average length
+        // If there are words in the tree, compute the average; otherwise, return 0 to avoid division by zero
+        return (wordCount > 0) ? totalLength / wordCount : 0;
     }
-    // Calculate and return the average length
-    // If there are words in the tree, compute the average; otherwise, return 0 to avoid division by zero
-    return (wordCount > 0) ? totalLength / wordCount : 0;
-}
 
 
     /**
