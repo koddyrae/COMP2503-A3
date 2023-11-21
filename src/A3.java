@@ -133,10 +133,21 @@ public class A3
 
    /* Calculate the average length of words stored the wordsByNaturalOrder tree*/
    private static int avgLength()
-   {
-	   // TODO:
-	   return 0;
-   }
+{
+    int totalLength = 0;
+    int wordCount = 0;
+    Iterator<Token> iterator = new BST.InOrderIterator<>(wordsByNaturalOrder);
+    // Iterate over the words in the tree
+    while (iterator.hasNext()) {
+        Token token = iterator.next();
+        totalLength += token.toString().length();
+        wordCount += 1;
+    }
+    // Calculate and return the average length
+    // If there are words in the tree, compute the average; otherwise, return 0 to avoid division by zero
+    return (wordCount > 0) ? totalLength / wordCount : 0;
+}
+
 
     /**
      * Method to check and remove the array of stop words from the BST if present.
