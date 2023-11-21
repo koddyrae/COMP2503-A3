@@ -129,6 +129,23 @@ public class A3
 	   // to the tree ordered by word frequency.
 	   
 	   // All words in the original tree must be added to tree ordered by word length
+	   
+    
+    Iterator<Token> iterator = new BST.InOrderIterator<>(wordsByNaturalOrder);
+
+    // Iterate over the words in the tree
+    while (iterator.hasNext()) {
+        // Get the next token (word) from the iterator
+        Token token = iterator.next();
+
+       
+        if (token.getCount() > 2) {
+            // If yes, add the word to the wordsByFreqDesc tree (ordered by frequency)
+            wordsByFreqDesc.add(token);
+        }
+
+        // Add the word to the wordsByLength tree (ordered by length)
+        wordsByLength.add(token);
    }
 
    /* Calculate the average length of words stored the wordsByNaturalOrder tree*/
