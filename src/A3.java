@@ -68,6 +68,7 @@ public class A3
        System.out.println("10 Longest");
 
        Iterator<Token> wordsByLengthInOrder = new BST.InOrderIterator<>(wordsByLength);
+       i = 10; //Reset the variable
        while ((i > 0) && wordsByLengthInOrder.hasNext()) {
            --i;
            Token t = wordsByLengthInOrder.next();
