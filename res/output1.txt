@@ -1,0 +1,40 @@
+Total Words: 31
+Unique Words: 13
+Stop Words: 8
+
+10 Most Frequent
+heres : 5 : 3
+
+10 Longest
+audition : 8 : 1
+lalaland : 8 : 1
+hearts : 6 : 1
+crazy : 5 : 1
+dream : 5 : 2
+fools : 5 : 2
+heres : 5 : 3
+movie : 5 : 1
+ache : 4 : 1
+make : 4 : 1
+
+The longest word is audition : 8 : 1
+The average word length is 5
+
+All
+ache : 4 : 1
+audition : 8 : 1
+crazy : 5 : 1
+dream : 5 : 2
+fools : 5 : 2
+hearts : 6 : 1
+heres : 5 : 3
+lalaland : 8 : 1
+make : 4 : 1
+may : 3 : 1
+mess : 4 : 1
+movie : 5 : 1
+seem : 4 : 1
+
+Alphabetic Tree: (Optimum Height: 3) (Actual Height: 5)
+Frequency Tree: (Optimum Height: 0) (Actual Height: 0)
+Length Tree: (Optimum Height: 3) (Actual Height: 6)

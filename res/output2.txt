@@ -1,0 +1,71 @@
+Total Words: 88
+Unique Words: 45
+Stop Words: 21
+
+10 Most Frequent
+
+10 Longest
+haemorrhage : 11 : 1
+underground : 11 : 1
+aeschylus : 9 : 1
+choephori : 9 : 1
+blissful : 8 : 1
+children : 8 : 1
+grinding : 8 : 1
+libation : 8 : 1
+oresteia : 8 : 1
+bearers : 7 : 1
+
+The longest word is haemorrhage : 11 : 1
+The average word length is 5
+
+All
+aeschylus : 9 : 1
+answer : 6 : 1
+bear : 4 : 1
+bearers : 7 : 1
+beneath : 7 : 1
+bless : 5 : 1
+blissful : 8 : 1
+bloody : 6 : 1
+bred : 4 : 1
+call : 4 : 1
+children : 8 : 1
+choephori : 9 : 1
+cure : 4 : 1
+curse : 5 : 1
+dark : 4 : 1
+death : 5 : 1
+earth : 5 : 1
+give : 4 : 1
+gods : 4 : 1
+grief : 5 : 1
+grinding : 8 : 1
+haemorrhage : 11 : 1
+hear : 4 : 1
+help : 4 : 1
+hits : 4 : 1
+house : 5 : 1
+libation : 8 : 1
+none : 4 : 1
+oh : 2 : 1
+oresteia : 8 : 1
+others : 6 : 1
+outside : 7 : 1
+powers : 6 : 1
+race : 4 : 1
+scream : 6 : 1
+send : 4 : 1
+sing : 4 : 1
+staunch : 7 : 1
+strife : 6 : 1
+stroke : 6 : 1
+torment : 7 : 1
+trilogy : 7 : 1
+triumph : 7 : 1
+underground : 11 : 1
+vein : 4 : 1
+
+Alphabetic Tree: (Optimum Height: 5) (Actual Height: 9)
+Frequency Tree: (Optimum Height: -1) (Actual Height: -1)
+Length Tree: (Optimum Height: 5) (Actual Height: 17)
