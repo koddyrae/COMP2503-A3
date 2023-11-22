@@ -53,8 +53,9 @@ public class A3
        System.out.println("Unique Words: " + wordsByNaturalOrder.size()); 
        System.out.println("Stop Words: " + stopwordcount);
        System.out.println();
-       System.out.println("10 Most Frequent"); 
+       System.out.println("10 Most Frequent");
 
+       //To print words in order of descending frequency
        Iterator<Token> wordsByFreqDescInOrder = new BST.InOrderIterator<>(wordsByFreqDesc);
        int i = 10;
        while ((i > 0) && wordsByFreqDescInOrder.hasNext()) {
@@ -67,6 +68,7 @@ public class A3
        System.out.println();
        System.out.println("10 Longest");
 
+       //To print words in order of descending length
        Iterator<Token> wordsByLengthInOrder = new BST.InOrderIterator<>(wordsByLength);
        i = 10; //Reset the variable
        while ((i > 0) && wordsByLengthInOrder.hasNext()) {
@@ -81,12 +83,14 @@ public class A3
        System.out.println();        
        System.out.println("All");
 
+       //To print words in natural order
        Iterator<Token> wordsByNaturalOrderInOrder = new BST.InOrderIterator<>(wordsByNaturalOrder);
        while (wordsByNaturalOrderInOrder.hasNext()) {
            Token t = wordsByNaturalOrderInOrder.next();
            System.out.println(t + ":" + t.toString().length() + ":" + t.getCount());
        }
 
+       //To print each trees height
        System.out.println();
        System.out.println("Alphabetic Tree: (Optimum Height: " + 
              optHeight(wordsByNaturalOrder.size()) + ") (Actual Height: " 
@@ -183,7 +187,6 @@ public class A3
      */
    private static void removeStop()
    {
-	   //FIXME: Still need to test if this works so might need to rework around it
        BST.LevelOrderIterator<Token> iterator = new BST.LevelOrderIterator<>(wordsByNaturalOrder);
        while (iterator.hasNext()) {
            Token curr = iterator.next();

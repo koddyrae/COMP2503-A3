@@ -204,6 +204,10 @@ public class BST<T extends Comparable<T>> {
         }
     }
 
+    /**
+     * Method to return size of the BST
+     * @return size of tree
+     */
     public int size() {
         return size;
     }
@@ -227,6 +231,7 @@ public class BST<T extends Comparable<T>> {
 
 
     /**
+     * Static class to initialize the level order iterator
      * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
      */
     static class LevelOrderIterator<T extends Comparable<T>> implements Iterator<T> {
@@ -269,16 +274,25 @@ public class BST<T extends Comparable<T>> {
             }
         }
 
+        /**
+         * Override method to return a boolean if there is a next
+         * @return A boolean describing whether there are elements left to traverse.
+         */
         public boolean hasNext() {
             return !typeQueue.isEmpty();
         }
 
+        /**
+         * Override method to return the next element
+         * @return T the next element in the Tree.
+         */
         public T next() {
             return typeQueue.remove();
         }
     }
 
     /**
+     * Static class to initialize the Pre-order iterator
      * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
      */
     static class PreOrderIterator<T extends Comparable<T>> implements Iterator<T> {
@@ -297,6 +311,7 @@ public class BST<T extends Comparable<T>> {
         }
 
         /**
+         * Override method to return a boolean if there is a next
          * @return A boolean describing whether there are elements left to traverse.
          */
         @Override
@@ -305,6 +320,7 @@ public class BST<T extends Comparable<T>> {
         }
 
         /**
+         * Override method to return the next element
          * @return T the next element in the Tree.
          */
         @Override
@@ -314,6 +330,7 @@ public class BST<T extends Comparable<T>> {
     }
 
     /**
+     * Static class to initialize the Post-order iterator
      * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
      */
     static class PostOrderIterator<T extends Comparable<T>> implements Iterator<T> {
@@ -332,6 +349,7 @@ public class BST<T extends Comparable<T>> {
         }
 
         /**
+         * Override method to return a boolean if there is a next
          * @return A boolean describing whether there are elements left to traverse.
          */
         @Override
@@ -340,6 +358,7 @@ public class BST<T extends Comparable<T>> {
         }
 
         /**
+         * Override method to return the next element
          * @return T the next element in the Tree.
          */
         @Override
@@ -349,6 +368,7 @@ public class BST<T extends Comparable<T>> {
     }
 
     /**
+     * Static class to initialize the In-order iterator
      * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
      */
     static class InOrderIterator<T extends Comparable<T>> implements Iterator<T> {
@@ -367,6 +387,7 @@ public class BST<T extends Comparable<T>> {
         }
 
         /**
+         * Override method to return a boolean if there is a next
          * @return A boolean describing whether there are elements left to traverse.
          */
         @Override
@@ -375,6 +396,7 @@ public class BST<T extends Comparable<T>> {
         }
 
         /**
+         * Override method to return the next element
          * @return T the next element in the Tree.
          */
         @Override
