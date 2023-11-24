@@ -166,11 +166,16 @@ public class BST<T extends Comparable<T>> {
             this.path.empty();
         } else {
             this.path.push(n);
-            if ((n.getData().compareTo(t) < 0)) {
+            int c = n.getData().compareTo(t);
+            if (c < 0) {
                 find(t, n.getLeft());
-            } else {
+            } else if (c > 0) {
                 find(t, n.getRight());
             }
+            /* If the comparison, c, is equal to zero we have found the element and no
+             * other branch applies. Recursion stops, path is retained, and the method
+             * returns to its caller.
+             */
         }
     }
 
