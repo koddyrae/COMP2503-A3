@@ -10,8 +10,8 @@ public class A3
    /* The lists (trees) of words. Alphabetic, by Frequency 
       and by length. */
    private static final BST<Token> wordsByNaturalOrder = new BST<>();
-   private static final BST<Token> wordsByFreqDesc = new BST<>(Token.CompFreqDesc);
-   private static final BST<Token> wordsByLength = new BST<>(Token.CompLengthDesc);
+   private static final BST<Token> wordsByFrequencyDescending = new BST<>(Token.CompFreqDesc);
+   private static final BST<Token> wordsByLengthDescending = new BST<>(Token.CompLengthDesc);
    
    // there are 103 stopwords in this list
    private static final String[] stopwords = {
@@ -55,7 +55,7 @@ public class A3
 
        System.out.println("\n10 Most Frequent");
        //To print words in order of descending frequency
-       Iterator<Token> wordsByFreqDescInOrder = new BST.InOrderIterator<>(wordsByFreqDesc);
+       Iterator<Token> wordsByFreqDescInOrder = new BST.InOrderIterator<>(wordsByFrequencyDescending);
        int i = 10;
        while ((i > 0) && wordsByFreqDescInOrder.hasNext()) {
            --i; // Decrement the sentinel.
@@ -66,18 +66,18 @@ public class A3
 
        System.out.println("\n10 Longest");
        //To print words in order of descending length
-       Iterator<Token> wordsByLengthInOrder = new BST.InOrderIterator<>(wordsByLength);
+       Iterator<Token> wordsByLengthInOrder = new BST.InOrderIterator<>(wordsByLengthDescending);
        i = 10; //Reset the variable
        while ((i > 0) && wordsByLengthInOrder.hasNext()) {
            --i;
            Token t = wordsByLengthInOrder.next();
            System.out.println(t + ":" + t.toString().length() + ":" + t.getCount());
        }
-       if (wordsByLength.size() == 0) {
+       if (wordsByLengthDescending.size() == 0) {
            System.out.println("\nThe longest word is: NONE [exceptional case].");
            System.out.println("The average word length is: NONE [exceptional case].");
        } else {
-           System.out.println("\nThe longest word is " + wordsByLength.minimum());
+           System.out.println("\nThe longest word is " + wordsByLengthDescending.minimum());
            System.out.println("The average word length is " + avgLength());
        }
 
@@ -95,11 +95,11 @@ public class A3
              optHeight(wordsByNaturalOrder.size()) + ") (Actual Height: " 
              + wordsByNaturalOrder.height() + ")");
        System.out.println("Frequency Tree: (Optimum Height: " + 
-             optHeight(wordsByFreqDesc.size()) + ") (Actual Height: " 
-             + wordsByFreqDesc.height() + ")");
+             optHeight(wordsByFrequencyDescending.size()) + ") (Actual Height: "
+             + wordsByFrequencyDescending.height() + ")");
        System.out.println("Length Tree: (Optimum Height: " + 
-             optHeight(wordsByLength.size()) + ") (Actual Height: " 
-             + wordsByLength.height() + ")");
+             optHeight(wordsByLengthDescending.size()) + ") (Actual Height: "
+             + wordsByLengthDescending.height() + ")");
    }
    
    /**
@@ -114,6 +114,7 @@ public class A3
            String word = inp.next().toLowerCase().trim().replaceAll("[^a-z]", "");
 
            if (word.length() > 0) {
+               totalwordcount++;
                /*
                 Create a new token object, if not already in the wordsByNaturalOrder,
                 add the token to the BST, otherwise, increase the frequency count of the
@@ -151,11 +152,11 @@ public class A3
 
            if (token.getCount() > 2) {
                // If yes, add the word to the wordsByFreqDesc tree (ordered by frequency)
-               wordsByFreqDesc.add(token);
+               wordsByFrequencyDescending.add(token);
            }
 
            // Add the word to the wordsByLength tree (ordered by length)
-           wordsByLength.add(token);
+           wordsByLengthDescending.add(token);
        }
    }
 
@@ -188,11 +189,12 @@ public class A3
    {
        BST.LevelOrderIterator<Token> iterator = new BST.LevelOrderIterator<>(wordsByNaturalOrder);
        while (iterator.hasNext()) {
-           Token curr = iterator.next();
+           Token currentElement = iterator.next();
            for (String word : stopwords) {
-               Token temp = new Token(word);
-               if (curr.equals(temp)) {
-                   wordsByNaturalOrder.delete(curr);
+               Token stopWord = new Token(word);
+               if (currentElement.equals(stopWord)) {
+                   wordsByNaturalOrder.delete(currentElement);
+                   stopwordcount++;
                }
            }
        }
