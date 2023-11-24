@@ -157,15 +157,16 @@ public class BST<T extends Comparable<T>> {
      * @return The data found: the corresponding element equivalent to the data searched for, t, or null.
      */
     public T find(T t) {
+        path.empty(); // Empty the path stack before searching through the tree.
         find(t, root);
         return (path.isEmpty()) ? null : path.peek().getData();
     }
 
     private void find(T t, BSTNode n) {
         if (n == null) {
-            this.path.empty();
+            path.empty();
         } else {
-            this.path.push(n);
+            path.push(n);
             int c = n.getData().compareTo(t);
             if (c < 0) {
                 find(t, n.getLeft());
