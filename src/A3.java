@@ -193,7 +193,7 @@ public class A3
            for (String word : stopwords) {
                Token temp = new Token(word);
                if (curr.equals(temp)) {
-                   wordsByNaturalOrder.delete(temp);
+                   wordsByNaturalOrder.delete(curr);
                }
            }
        }
