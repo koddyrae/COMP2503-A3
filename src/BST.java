@@ -149,17 +149,16 @@ public class BST<T extends Comparable<T>> {
         }
     }
 
+    /**
+     * If the data is found within the tree, the path along the edges of the tree are
+     * available in the tree's path field. If the data is not found, the path is
+     * emptied and null is returned.
+     * @param t The data to look for in the tree.
+     * @return The data found: the corresponding element equivalent to the data searched for, t, or null.
+     */
     public T find(T t) {
-        // Modify the path in our search for the element.
         find(t, root);
-
-        // Return the data, if found.
-        if (!path.isEmpty()) {
-            return path.peek().getData();
-        } else {
-            // If data is not found, the private find method empties path.
-            return null;
-        }
+        return (path.isEmpty()) ? null : path.peek().getData();
     }
 
     private void find(T t, BSTNode n) {

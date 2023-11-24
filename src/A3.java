@@ -27,10 +27,10 @@ public class A3
          "man", "woman", "would", "should", "dont", "after", "before", "im", "men"
    };
 
-   private static int totalwordcount = 0;
-   private static int stopwordcount = 0;
+   private static int totalWordCount = 0;
+   private static int stopWordCount = 0;
 
-   private static final Scanner inp = new Scanner(System.in);
+   private static final Scanner standardInput = new Scanner(System.in);
 
     /**
      * Main Method
@@ -49,9 +49,9 @@ public class A3
      */
    private static void printResults()
    {
-       System.out.println("Total Words: " + totalwordcount);
+       System.out.println("Total Words: " + totalWordCount);
        System.out.println("Unique Words: " + wordsByNaturalOrder.size()); 
-       System.out.println("Stop Words: " + stopwordcount);
+       System.out.println("Stop Words: " + stopWordCount);
 
        System.out.println("\n10 Most Frequent");
        //To print words in order of descending frequency
@@ -106,26 +106,31 @@ public class A3
     * Method to read the file and add words to the list/tree.
     */
    private static void readFile() {
-       while (inp.hasNext()) {
+       while (standardInput.hasNext()) {
            /*
             Get the next word, convert to lower case, strip out blanks and non-alphabetic
             characters.
            */
-           String word = inp.next().toLowerCase().trim().replaceAll("[^a-z]", "");
+           String word = standardInput
+                   .next()
+                   .toLowerCase()
+                   .trim()
+                   .replaceAll("[^a-z]", "")
+                   ;
 
            if (word.length() > 0) {
-               totalwordcount++;
+               totalWordCount++;
                /*
                 Create a new token object, if not already in the wordsByNaturalOrder,
                 add the token to the BST, otherwise, increase the frequency count of the
                 object already in the tree.
                */
-               Token maybeNewToken = new Token(word),
-                       existingToken = wordsByNaturalOrder.find(maybeNewToken);
-               if (existingToken == null) {
-                   wordsByNaturalOrder.add(maybeNewToken);
+               Token maybeNewElement = new Token(word),
+                       existingElement = wordsByNaturalOrder.find(maybeNewElement);
+               if (existingElement == null) {
+                   wordsByNaturalOrder.add(maybeNewElement);
                } else {
-                   existingToken.incrementCount();
+                   existingElement.incrementCount();
                }
            }
        }
@@ -194,7 +199,7 @@ public class A3
                Token stopWord = new Token(word);
                if (currentElement.equals(stopWord)) {
                    wordsByNaturalOrder.delete(currentElement);
-                   stopwordcount++;
+                   stopWordCount++;
                }
            }
        }
