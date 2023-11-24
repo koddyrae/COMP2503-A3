@@ -52,9 +52,8 @@ public class A3
        System.out.println("Total Words: " + totalwordcount);
        System.out.println("Unique Words: " + wordsByNaturalOrder.size()); 
        System.out.println("Stop Words: " + stopwordcount);
-       System.out.println();
-       System.out.println("10 Most Frequent");
 
+       System.out.println("\n10 Most Frequent");
        //To print words in order of descending frequency
        Iterator<Token> wordsByFreqDescInOrder = new BST.InOrderIterator<>(wordsByFreqDesc);
        int i = 10;
@@ -65,9 +64,7 @@ public class A3
            System.out.println(t + ":" + t.toString().length() + ":" + t.getCount());
        }
 
-       System.out.println();
-       System.out.println("10 Longest");
-
+       System.out.println("\n10 Longest");
        //To print words in order of descending length
        Iterator<Token> wordsByLengthInOrder = new BST.InOrderIterator<>(wordsByLength);
        i = 10; //Reset the variable
@@ -76,13 +73,15 @@ public class A3
            Token t = wordsByLengthInOrder.next();
            System.out.println(t + ":" + t.toString().length() + ":" + t.getCount());
        }
+       if (wordsByLength.size() == 0) {
+           System.out.println("\nThe longest word is: NONE [exceptional case].");
+           System.out.println("The average word length is: NONE [exceptional case].");
+       } else {
+           System.out.println("\nThe longest word is " + wordsByLength.minimum());
+           System.out.println("The average word length is " + avgLength());
+       }
 
-       System.out.println();
-       System.out.println("The longest word is " + wordsByLength.minimum());
-       System.out.println("The average word length is " + avgLength());
-       System.out.println();        
-       System.out.println("All");
-
+       System.out.println("\nAll");
        //To print words in natural order
        Iterator<Token> wordsByNaturalOrderInOrder = new BST.InOrderIterator<>(wordsByNaturalOrder);
        while (wordsByNaturalOrderInOrder.hasNext()) {

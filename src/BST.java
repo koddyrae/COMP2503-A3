@@ -176,7 +176,8 @@ public class BST<T extends Comparable<T>> {
     }
 
     // Calling this method sets this.orphan, but the node is not actually orphaned.
-    public T minimum() {
+    public T minimum() throws RuntimeException {
+        if (root == null) throw new RuntimeException("There is no minimum in a tree with a null root.");
         return minimum(root).getData();
     }
 
@@ -184,10 +185,10 @@ public class BST<T extends Comparable<T>> {
     private BSTNode minimum(BSTNode n) {
         // Either the current node n is the smallest node, because it has no
         // lesser node, or the method needs to recurse.
-        if ((n.getLeft() != null)) {
+        if (n.getLeft() != null) {
             return minimum(n.getLeft()); // Tail-recurse
         } else {
-            this.orphan = n.getRight();
+            this.orphan = n.getRight(); // NULL is a permitted value for this field.
             return n; // The minimum in the subtree.
         }
     }
