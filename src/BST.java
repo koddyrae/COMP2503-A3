@@ -442,8 +442,8 @@ public class BST<T extends Comparable<T>> {
             return (getLeft() == null) && (getRight() == null);
         }
 
-        public int compareTo(BSTNode o) {
-            return this.getData().compareTo(o.getData());
+        public int compareTo(BSTNode n) {
+            return this.getData().compareTo(n.getData());
         }
 
         public int compareTo(T t) {
