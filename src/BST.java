@@ -167,7 +167,11 @@ public class BST<T extends Comparable<T>> {
             this.path.empty();
         } else {
             this.path.push(n);
-            ((n.getData().compareTo(t) < 0) ? find(t, n.getLeft()) : find(t, n.getRight()));
+            if ((n.getData().compareTo(t) < 0)) {
+                find(t, n.getLeft());
+            } else {
+                find(t, n.getRight());
+            }
         }
     }
 
