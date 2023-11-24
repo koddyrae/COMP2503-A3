@@ -162,28 +162,12 @@ public class BST<T extends Comparable<T>> {
         }
     }
 
-    // This is quite dependent on the equality of the types being compared. If
-    // they are simple base types, it is fine; for the Token class, the tokens
-    // must be equal based on their string contents.
     private void find(T t, BSTNode n) {
-        this.path.push(n);
-        int c = n.getData().compareTo(t);
-
-        /* The base case---in which the node that this call was made with is what
-         *  we're searching for---has no clause, and as the condition is otherwise
-         *  an empty if statement; the final if statement is protected as <i>not</i>
-         *  being the node we are searching for. The void method simply exits without
-         *  returning anything, but having modified the <code>path</code> suitably.
-         */
-        if ((c < 0) && (n.getLeft() != null)) {
-            // The data should be found to the left of the current node.
-            find(t, n.getLeft());
-        } else if ((c > 0) && (n.getRight() != null)) {
-            // The data should be found to the right of the current node.
-            find(t, n.getRight());
-        } else if (c != 0){
-            // Empty the path because no element in the tree contains the data searched for.
-            path.empty();
+        if (n == null) {
+            this.path.empty();
+        } else {
+            this.path.push(n);
+            ((n.getData().compareTo(t) < 0) ? find(t, n.getLeft()) : find(t, n.getRight()));
         }
     }
 
