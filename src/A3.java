@@ -155,13 +155,13 @@ public class A3
            // Get the next token (word) from the iterator
            Token token = iterator.next();
 
+           // Add the word to the wordsByLength tree (ordered by length)
+           wordsByLengthDescending.add(token);
+
            if (token.getCount() > 2) {
                // If yes, add the word to the wordsByFreqDesc tree (ordered by frequency)
                wordsByFrequencyDescending.add(token);
            }
-
-           // Add the word to the wordsByLength tree (ordered by length)
-           wordsByLengthDescending.add(token);
        }
    }
 
