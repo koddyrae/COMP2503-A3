@@ -145,7 +145,10 @@ public class BST<T extends Comparable<T>> {
                     break;
             }
 
-            path.empty(); // The path has been modified, so it must be emptied before any other operations may occur.
+            // The path has been modified, so it must be emptied before any other operations may occur.
+            while(path.size() > 0) {
+                path.pop();
+            }
         }
     }
 
@@ -157,14 +160,24 @@ public class BST<T extends Comparable<T>> {
      * @return The data found: the corresponding element equivalent to the data searched for, t, or null.
      */
     public T find(T t) {
-        path.empty(); // Empty the path stack before searching through the tree.
+        // Empty the stack before beginning a search.
+        while (path.size() > 0) {
+            path.pop();
+        }
+
+        // Search for an element containing data equivalent to the search parameter object.
         find(t, root);
-        return (path.isEmpty()) ? null : path.peek().getData();
+
+        // Return null if the path stack is empty; otherwise, return the found object.
+        return (path.empty()) ? null : path.peek().getData();
     }
 
     private void find(T t, BSTNode n) {
         if (n == null) {
-            path.empty();
+            // Empty the stack, because no element matching the search parameter was found.
+            while (path.size() > 0) {
+                path.pop();
+            }
         } else {
             path.push(n);
             int c = cmp.compare(t, n.getData());
