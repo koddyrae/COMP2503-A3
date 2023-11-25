@@ -167,7 +167,9 @@ public class BST<T extends Comparable<T>> {
             path.empty();
         } else {
             path.push(n);
-            int c = n.getData().compareTo(t);
+            // Comparing what we are looking for against what exists in the tree makes the directions easier.
+            // If what we are looking for should exist prior to the node we are inspecting, then the magnitude is negative, etc.
+            int c = t.compareTo(n.getData());
             if (c < 0) {
                 find(t, n.getLeft());
             } else if (c > 0) {
