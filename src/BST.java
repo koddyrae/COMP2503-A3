@@ -77,6 +77,9 @@ public class BST<T extends Comparable<T>> {
 
     /**
      * @author Bryce Carson
+     * Method to delete a node from the BST
+     * @param t the data of the node that needs to be deleted
+     *
      */
     public void delete(T t) {
         // Recall that find has the side effect of setting `path`.
@@ -172,6 +175,11 @@ public class BST<T extends Comparable<T>> {
         return (path.empty()) ? null : path.peek().getData();
     }
 
+    /**
+     * Method to find a specific node
+     * @param t the data that is being searched for
+     * @param n the starting point to search at
+     */
     private void find(T t, BSTNode n) {
         if (n == null) {
             // Empty the stack, because no element matching the search parameter was found.
@@ -193,6 +201,11 @@ public class BST<T extends Comparable<T>> {
         }
     }
 
+    /**
+     * Method to return the minimum node of the tree
+     * @return node the data of the node
+     * @throws RuntimeException exception for if there is no minimum in the tree (it's null)
+     */
     // Calling this method sets this.orphan, but the node is not actually orphaned.
     public T minimum() throws RuntimeException {
         if (root == null) throw new RuntimeException("There is no minimum in a tree with a null root.");
@@ -200,6 +213,12 @@ public class BST<T extends Comparable<T>> {
     }
 
     // Calling this method sets this.orphan, but the node is not actually orphaned.
+
+    /**
+     * Method to return the minimum node of the tree
+     * @param n the starting node (either smallest or needs to recurse)
+     * @return node the smallest node of the tree
+     */
     private BSTNode minimum(BSTNode n) {
         // Either the current node n is the smallest node, because it has no
         // lesser node, or the method needs to recurse.
@@ -250,8 +269,9 @@ public class BST<T extends Comparable<T>> {
         */
         private final Queue<T> typeQueue = new LinkedList<>();
 
-        /** Initialize a new Iterator for a tree.
-         * @param tree The tree to iterate over.
+        /**
+         * Default constructor of the LevelOrder iterator
+         * @param tree the tree that needs to be traversed
          */
         public LevelOrderIterator(BST<T> tree) {
             if (tree.root == null) {
@@ -305,10 +325,18 @@ public class BST<T extends Comparable<T>> {
     static class PreOrderIterator<T extends Comparable<T>> implements Iterator<T> {
         private final Queue<T> typeQueue = new LinkedList<>();
 
+        /**
+         * Default constructor of the PreOrder iterator
+         * @param tree the tree that needs to be traversed
+         */
         PreOrderIterator(BST<T> tree) {
             preOrderTraversal(tree.root);
         }
 
+        /**
+         * Method to preOrder traverse through the tree
+         * @param n the node to check
+         */
         private void preOrderTraversal(BST<T>.BSTNode n) {
             if (n != null) {
                 this.typeQueue.add(n.getData());
@@ -343,10 +371,18 @@ public class BST<T extends Comparable<T>> {
     static class PostOrderIterator<T extends Comparable<T>> implements Iterator<T> {
         private final Queue<T> typeQueue = new LinkedList<>();
 
+        /**
+         * Default constructor of the PostOrder iterator
+         * @param tree the tree that needs to be traversed
+         */
         PostOrderIterator(BST<T> tree) {
             postOrderTraversal(tree.root);
         }
 
+        /**
+         * Method to postOrder traverse through the tree
+         * @param n the node to check
+         */
         private void postOrderTraversal(BST<T>.BSTNode n) {
             if (n != null) {
                 postOrderTraversal(n.getLeft());
@@ -381,10 +417,18 @@ public class BST<T extends Comparable<T>> {
     static class InOrderIterator<T extends Comparable<T>> implements Iterator<T> {
         private final Queue<T> typeQueue = new LinkedList<>();
 
+        /**
+         * Default constructor of the InOrder iterator
+         * @param tree the tree that needs to be traversed
+         */
         InOrderIterator(BST<T> tree) {
             inOrderTraversal(tree.root);
         }
 
+        /**
+         * Method to inOrder traverse through the tree
+         * @param n the node to check
+         */
         private void inOrderTraversal(BST<T>.BSTNode n) {
             if (n != null) {
                 inOrderTraversal(n.getLeft());
@@ -412,53 +456,98 @@ public class BST<T extends Comparable<T>> {
         }
     }
 
+    /**
+     * Inner class for BSTNode
+     */
     class BSTNode implements Comparable<BSTNode> {
         private T data;
         private BSTNode left;
         private BSTNode right;
 
+        /**
+         * Default constructor for a BST Node
+         * @param d the data to be stored in the node
+         */
         public BSTNode(T d) {
             setLeft(null);
             setRight(null);
             setData(d);
         }
 
+        /**
+         * Method to return the data inside a node
+         * @return data the data in the node
+         */
         public T getData() {
             return data;
         }
 
+        /**
+         * Method to set the data of a node if not set at creation
+         * @param d the data in the node
+         */
         public void setData(T d) {
             data = d;
         }
 
-        // Returns this.
+        /**
+         * Method to set the left child of a node
+         * @param l the node to be set as left child
+         * @return node the current calling node
+         */
         public BSTNode setLeft(BSTNode l) {
             left = l;
             return this;
         }
 
-        // Returns this.
+        /**
+         * Method to set the right child of a node
+         * @param r the node to be set as right child
+         * @return node the current calling node
+         */
         public BSTNode setRight(BSTNode r) {
             right = r;
             return this;
         }
 
+        /**
+         * Method to return the left child of a node
+         * @return node the left child
+         */
         public BSTNode getLeft() {
             return left;
         }
 
+        /**
+         * Method to return the right child of a node
+         * @return node the right child
+         */
         public BSTNode getRight() {
             return right;
         }
 
+        /**
+         * Method to check if the calling node is a leaf
+         * @return true if node is a leaf, false otherwise
+         */
         public boolean isLeaf() {
             return (getLeft() == null) && (getRight() == null);
         }
 
+        /**
+         * Comparison method to compare two nodes
+         * @param n the object to be compared.
+         * @return int the difference between the two nodes
+         */
         public int compareTo(BSTNode n) {
             return this.getData().compareTo(n.getData());
         }
 
+        /**
+         * Comparison method to compare the data between a node and data
+         * @param t the data of to be compared
+         * @return int the difference between two nodes
+         */
         public int compareTo(T t) {
             return this.getData().compareTo(t);
         }
