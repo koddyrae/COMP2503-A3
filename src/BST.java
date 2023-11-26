@@ -18,6 +18,10 @@ public class BST<T extends Comparable<T>> {
     // A node which is orphaned when the minimum of a right-subtree has a right child. It is promoted to its parents position.
     private BSTNode orphan = null;
 
+    public BSTNode getRoot() {
+        return root;
+    }
+
     /**
      * Constructor for a BST that contains a comparator for ordering
      * @param comparator the desired comparator used
@@ -54,7 +58,7 @@ public class BST<T extends Comparable<T>> {
      * @param nodeToAdd the node being added
      */
     private void add(BSTNode root, BSTNode nodeToAdd) {
-        int comparison = cmp.compare(root.getData(), nodeToAdd.getData());
+        int comparison = cmp.compare(nodeToAdd.getData(), root.getData());
 
         // There should never be a case where the comparison is equal, so it's not dealt with here.
         if (comparison < 0) {
@@ -167,9 +171,7 @@ public class BST<T extends Comparable<T>> {
      */
     public T find(T t) {
         // Empty the stack before beginning a search.
-        while (path.size() > 0) {
-            path.pop();
-        }
+        path.clear();
 
         // Search for an element containing data equivalent to the search parameter object.
         find(t, root);
@@ -201,9 +203,7 @@ public class BST<T extends Comparable<T>> {
 
         // Empty the stack, because no element matching the search parameter was found.
         if (n == null) {
-            while (path.size() > 0) {
-                path.pop();
-            }
+            path.clear();
         }
     }
 
