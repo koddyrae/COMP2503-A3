@@ -184,23 +184,26 @@ public class BST<T extends Comparable<T>> {
      * @param n the starting point to search at
      */
     private void find(T t, BSTNode n) {
-        if (n == null) {
-            // Empty the stack, because no element matching the search parameter was found.
-            while (path.size() > 0) {
-                path.pop();
-            }
-        } else {
+        while (n != null) {
             path.push(n);
-            int c = cmp.compare(t, n.getData());
-            if (c < 0) {
-                find(t, n.getLeft());
-            } else if (c > 0) {
-                find(t, n.getRight());
+            int comparison = cmp.compare(t, n.getData());
+            if (comparison < 0) {
+                n = n.getLeft();
+            } else if (comparison > 0) {
+                n = n.getRight();
             }
-            /* If the comparison, c, is equal to zero we have found the element and no
+            /* If the comparison is equal to zero we have found the element and no
              * other branch applies. Recursion stops, path is retained, and the method
              * returns to its caller.
              */
+            break;
+        }
+
+        // Empty the stack, because no element matching the search parameter was found.
+        if (n == null) {
+            while (path.size() > 0) {
+                path.pop();
+            }
         }
     }
 
