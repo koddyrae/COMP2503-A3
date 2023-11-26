@@ -1,9 +1,7 @@
-
-import java.util.Scanner;
-import java.util.Iterator;
-
-import com.sun.source.tree.Tree;
 import tech.vanyo.TreePrinter;
+
+import java.util.Iterator;
+import java.util.Scanner;
 
 /**
  * Main class to handle main functionality of the program
@@ -42,7 +40,7 @@ public class A3
    public static void main(String[] args)
    {	
        readFile();
-       TreePrinter<BST.BSTNode> treePrinter = new TreePrinter<>(n -> n.getData().toString(), n -> n.getLeft(), n -> n.getRight());
+       TreePrinter<BST<Token>.BSTNode> treePrinter = new TreePrinter<>(n -> n.getData().toString(), n -> n.getLeft(), n -> n.getRight());
        treePrinter.setHspace(3);
        treePrinter.setPrintStream(System.out);
        treePrinter.setSquareBranches(true);
@@ -144,15 +142,14 @@ public class A3
            if (word.length() > 0) {
                totalWordCount++;
                /*
-                Create a new token object, if not already in the wordsByNaturalOrder,
-                add the token to the BST, otherwise, increase the frequency count of the
-                object already in the tree.
+                existingElement is either null or the same as maybeNewElement (in which
+                case, maybeNewElement is not a new element; ie, maybe resolves to "not").
                */
                Token maybeNewElement = new Token(word),
                        existingElement = wordsByNaturalOrder.find(maybeNewElement);
                if (existingElement == null) {
                    wordsByNaturalOrder.add(maybeNewElement);
-               } else if (maybeNewElement.equals(existingElement)){
+               } else {
                    existingElement.incrementCount();
                }
            }
