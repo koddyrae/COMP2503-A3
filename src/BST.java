@@ -258,9 +258,8 @@ public class BST<T extends Comparable<T>> {
      * @return height of node
      */
     private int height(BSTNode r) {
-        return ( (r == null) ? -1 : (1 + Math.max(height(r.getLeft()), height(r.getRight()))) );
+        return ( (r == null) ? 0 : (1 + Math.max(height(r.getLeft()), height(r.getRight()))));
     }
-
 
     /**
      * Static class to initialize the level order iterator
@@ -319,98 +318,6 @@ public class BST<T extends Comparable<T>> {
          * Override method to return the next element
          * @return T the next element in the Tree.
          */
-        public T next() {
-            return typeQueue.remove();
-        }
-    }
-
-    /**
-     * Static class to initialize the Pre-order iterator
-     * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
-     */
-    static class PreOrderIterator<T extends Comparable<T>> implements Iterator<T> {
-        private final Queue<T> typeQueue = new LinkedList<>();
-
-        /**
-         * Default constructor of the PreOrder iterator
-         * @param tree the tree that needs to be traversed
-         */
-        PreOrderIterator(BST<T> tree) {
-            preOrderTraversal(tree.root);
-        }
-
-        /**
-         * Method to preOrder traverse through the tree
-         * @param n the node to check
-         */
-        private void preOrderTraversal(BST<T>.BSTNode n) {
-            if (n != null) {
-                this.typeQueue.add(n.getData());
-                preOrderTraversal(n.getLeft());
-                preOrderTraversal(n.getRight());
-            }
-        }
-
-        /**
-         * Override method to return a boolean if there is a next
-         * @return A boolean describing whether there are elements left to traverse.
-         */
-        @Override
-        public boolean hasNext() {
-            return !typeQueue.isEmpty();
-        }
-
-        /**
-         * Override method to return the next element
-         * @return T the next element in the Tree.
-         */
-        @Override
-        public T next() {
-            return typeQueue.remove();
-        }
-    }
-
-    /**
-     * Static class to initialize the Post-order iterator
-     * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
-     */
-    static class PostOrderIterator<T extends Comparable<T>> implements Iterator<T> {
-        private final Queue<T> typeQueue = new LinkedList<>();
-
-        /**
-         * Default constructor of the PostOrder iterator
-         * @param tree the tree that needs to be traversed
-         */
-        PostOrderIterator(BST<T> tree) {
-            postOrderTraversal(tree.root);
-        }
-
-        /**
-         * Method to postOrder traverse through the tree
-         * @param n the node to check
-         */
-        private void postOrderTraversal(BST<T>.BSTNode n) {
-            if (n != null) {
-                postOrderTraversal(n.getLeft());
-                postOrderTraversal(n.getRight());
-                this.typeQueue.add(n.getData());
-            }
-        }
-
-        /**
-         * Override method to return a boolean if there is a next
-         * @return A boolean describing whether there are elements left to traverse.
-         */
-        @Override
-        public boolean hasNext() {
-            return !typeQueue.isEmpty();
-        }
-
-        /**
-         * Override method to return the next element
-         * @return T the next element in the Tree.
-         */
-        @Override
         public T next() {
             return typeQueue.remove();
         }
