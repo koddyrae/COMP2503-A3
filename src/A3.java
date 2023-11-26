@@ -87,7 +87,9 @@ public class A3
            System.out.println("\nThe longest word is: NONE [exceptional case].");
            System.out.println("The average word length is: NONE [exceptional case].");
        } else {
-           System.out.println("\nThe longest word is " + wordsByLengthDescending.minimum());
+           Iterator<Token> longestIterator = new BST.InOrderIterator<>(wordsByLengthDescending);
+           Token longest = longestIterator.next();
+           System.out.println("\nThe longest word is " + longest + " : " + longest.toString().length() + " : " + longest.getCount());
            System.out.println("The average word length is " + avgLength());
        }
 
