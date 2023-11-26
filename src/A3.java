@@ -2,6 +2,9 @@
 import java.util.Scanner;
 import java.util.Iterator;
 
+import com.sun.source.tree.Tree;
+import tech.vanyo.TreePrinter;
+
 /**
  * Main class to handle main functionality of the program
  */
@@ -39,9 +42,17 @@ public class A3
    public static void main(String[] args)
    {	
        readFile();
+       TreePrinter<BST.BSTNode> treePrinter = new TreePrinter<>(n -> n.getData().toString(), n -> n.getLeft(), n -> n.getRight());
+       treePrinter.setHspace(3);
+       treePrinter.setPrintStream(System.out);
+       treePrinter.setSquareBranches(true);
+       treePrinter.setLrAgnostic(false);
+       treePrinter.printTree(wordsByNaturalOrder.getRoot());
+/*
        removeStop();
        createFreqLists();
        printResults();
+*/
    }
 
     /**
@@ -56,7 +67,7 @@ public class A3
        int i;
 
        if (wordsByFrequencyDescending.size() != 0) {
-           int sizePrinted = (wordsByFrequencyDescending.size() >= 10) ? 10 : wordsByFrequencyDescending.size();
+           int sizePrinted = Math.min(wordsByFrequencyDescending.size(), 10);
            System.out.println("\n" + sizePrinted + "Most Frequent");
            //To print words in order of descending frequency
            Iterator<Token> wordsByFreqDescInOrder = new BST.InOrderIterator<>(wordsByFrequencyDescending);
@@ -72,7 +83,7 @@ public class A3
        }
 
        if (wordsByLengthDescending.size() != 0) {
-           int sizePrinted = (wordsByLengthDescending.size() >= 10) ? 10 : wordsByLengthDescending.size();
+           int sizePrinted = Math.min(wordsByLengthDescending.size(), 10);
            System.out.println("\n" + sizePrinted + " Longest");
            //To print words in order of descending length
            Iterator<Token> wordsByLengthInDescendingOrder = new BST.InOrderIterator<>(wordsByLengthDescending);
