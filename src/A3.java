@@ -53,25 +53,35 @@ public class A3
        System.out.println("Unique Words: " + wordsByNaturalOrder.size()); 
        System.out.println("Stop Words: " + stopWordCount);
 
-       System.out.println("\n10 Most Frequent");
-       //To print words in order of descending frequency
-       Iterator<Token> wordsByFreqDescInOrder = new BST.InOrderIterator<>(wordsByFrequencyDescending);
-       int i = 10;
-       while ((i > 0) && wordsByFreqDescInOrder.hasNext()) {
-           --i; // Decrement the sentinel.
-           Token t = wordsByFreqDescInOrder.next();
-           // DONE: Whenever you print a Token, print the word, its length, and the number of times it occurred, separated by colons.
-           System.out.println(t + ":" + t.toString().length() + ":" + t.getCount());
+       int i;
+
+       if (wordsByFrequencyDescending.size() != 0) {
+           int sizePrinted = (wordsByFrequencyDescending.size() >= 10) ? 10 : wordsByFrequencyDescending.size();
+           System.out.println("\n" + sizePrinted + "Most Frequent");
+           //To print words in order of descending frequency
+           Iterator<Token> wordsByFreqDescInOrder = new BST.InOrderIterator<>(wordsByFrequencyDescending);
+           i = 10;
+           while ((i > 0) && wordsByFreqDescInOrder.hasNext()) {
+               --i; // Decrement the sentinel.
+               Token t = wordsByFreqDescInOrder.next();
+               // DONE: Whenever you print a Token, print the word, its length, and the number of times it occurred, separated by colons.
+               System.out.println(t + ":" + t.toString().length() + ":" + t.getCount());
+           }
+       } else {
+           System.out.println("\nNo words with a frequency greater than 2 existed in the input.");
        }
 
-       System.out.println("\n10 Longest");
-       //To print words in order of descending length
-       Iterator<Token> wordsByLengthInDescendingOrder = new BST.InOrderIterator<>(wordsByLengthDescending);
-       i = 10; //Reset the variable
-       while ((i > 0) && wordsByLengthInDescendingOrder.hasNext()) {
-           --i;
-           Token t = wordsByLengthInDescendingOrder.next();
-           System.out.println(t + ":" + t.toString().length() + ":" + t.getCount());
+       if (wordsByLengthDescending.size() != 0) {
+           int sizePrinted = (wordsByLengthDescending.size() >= 10) ? 10 : wordsByLengthDescending.size();
+           System.out.println("\n" + sizePrinted + " Longest");
+           //To print words in order of descending length
+           Iterator<Token> wordsByLengthInDescendingOrder = new BST.InOrderIterator<>(wordsByLengthDescending);
+           i = 10; //Reset the variable
+           while ((i > 0) && wordsByLengthInDescendingOrder.hasNext()) {
+               --i;
+               Token t = wordsByLengthInDescendingOrder.next();
+               System.out.println(t + ":" + t.toString().length() + ":" + t.getCount());
+           }
        }
        if (wordsByLengthDescending.size() == 0) {
            System.out.println("\nThe longest word is: NONE [exceptional case].");
@@ -129,7 +139,7 @@ public class A3
                        existingElement = wordsByNaturalOrder.find(maybeNewElement);
                if (existingElement == null) {
                    wordsByNaturalOrder.add(maybeNewElement);
-               } else {
+               } else if (maybeNewElement.equals(existingElement)){
                    existingElement.incrementCount();
                }
            }
