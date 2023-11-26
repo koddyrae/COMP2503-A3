@@ -66,11 +66,11 @@ public class A3
 
        System.out.println("\n10 Longest");
        //To print words in order of descending length
-       Iterator<Token> wordsByLengthInOrder = new BST.InOrderIterator<>(wordsByLengthDescending);
+       Iterator<Token> wordsByLengthInDescendingOrder = new BST.InOrderIterator<>(wordsByLengthDescending);
        i = 10; //Reset the variable
-       while ((i > 0) && wordsByLengthInOrder.hasNext()) {
+       while ((i > 0) && wordsByLengthInDescendingOrder.hasNext()) {
            --i;
-           Token t = wordsByLengthInOrder.next();
+           Token t = wordsByLengthInDescendingOrder.next();
            System.out.println(t + ":" + t.toString().length() + ":" + t.getCount());
        }
        if (wordsByLengthDescending.size() == 0) {
@@ -178,7 +178,7 @@ public class A3
         while (iterator.hasNext()) {
             Token token = iterator.next();
             totalLength += token.toString().length();
-            wordCount += 1;
+            wordCount++;
         }
 
         // Calculate and return the average length
