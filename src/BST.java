@@ -85,7 +85,7 @@ public class BST<T extends Comparable<T>> {
             if (path.peek().getLeft() != null) children++;
             if (path.peek().getRight() != null) children++;
 
-            BSTNode child, leftChild, rightChild, target, parent, grandparent, minimum;
+            BSTNode child, leftChild, rightChild, target, parent, grandparent = null, minimum;
 
             switch(children) {
                 case 1:
@@ -108,7 +108,10 @@ public class BST<T extends Comparable<T>> {
                     break;
                 case 2:
                     target = path.pop();
-                    grandparent = path.pop(); // Null when target == root.
+                    if (target != root) {
+                        // Null when target == root.
+                        grandparent = path.pop();
+                    }
                     leftChild = target.getLeft();
                     rightChild = target.getRight();
                     minimum = minimum(rightChild);
