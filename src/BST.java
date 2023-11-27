@@ -53,10 +53,9 @@ public class BST<T extends Comparable<T>> {
      * @param root location of where node should be added
      * @param nodeToAdd the node being added
      */
-    private void add(BSTNode root, BSTNode nodeToAdd) {
+    private void add(BSTNode root, BSTNode nodeToAdd) throws RuntimeException {
         int comparison = cmp.compare(nodeToAdd.getData(), root.getData());
 
-        // There should never be a case where the comparison is equal, so it's not dealt with here.
         if (comparison < 0) {
             if (root.getLeft() == null) {
                 root.setLeft(nodeToAdd);
@@ -72,6 +71,8 @@ public class BST<T extends Comparable<T>> {
             else {
                 add(root.getRight(), nodeToAdd);
             }
+        } else {
+            throw new RuntimeException("Existing element attempting to be added to tree.");
         }
     }
 

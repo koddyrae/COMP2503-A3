@@ -150,14 +150,6 @@ public class A3
     * Method to create the frequency and length lists.
     */
    private static void createFreqLists() {
-       // Use your implementation of the iterator interface
-       // for the BST class.
-
-       // Make sure you only add words that have occurred more than twice
-       // to the tree ordered by word frequency.
-
-       // All words in the original tree must be added to tree ordered by word length
-
        Iterator<Token> iterator = new BST.InOrderIterator<>(wordsByNaturalOrder);
 
        // Iterate over the words in the tree
