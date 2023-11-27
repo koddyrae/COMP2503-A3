@@ -1,4 +1,4 @@
-import tech.vanyo.TreePrinter;
+//import tech.vanyo.TreePrinter;
 
 import java.util.Iterator;
 import java.util.Scanner;
@@ -39,24 +39,30 @@ public class A3
      */
    public static void main(String[] args)
    {
+/*
        // TODO: remove after finishing check that delete works well.
        TreePrinter<BST<Token>.BSTNode> treePrinter = new TreePrinter<>(n -> n.getData().format(), n -> n.getLeft(), n -> n.getRight());
        treePrinter.setHspace(3);
        treePrinter.setPrintStream(System.out);
        treePrinter.setSquareBranches(true);
        treePrinter.setLrAgnostic(false);
+*/
 
        readFile();
 
+/*
        // TODO: remove after finishing check that delete works well.
        System.out.println("The tree before deleting stop words.");
        treePrinter.printTree(wordsByNaturalOrder.root);
+*/
 
        removeStop();
 
+/*
        // TODO: remove after finishing check that delete works well.
        System.out.println("\n\nThe tree after deleting stop words.");
        treePrinter.printTree(wordsByNaturalOrder.root);
+*/
 
        createFreqLists();
        printResults();

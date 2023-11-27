@@ -11,8 +11,9 @@ import java.util.*;
  * though naively.
  */
 public class BST<T extends Comparable<T>> {
-    // TODO: revert to private after using TreePrinter to test.
-    public BSTNode root = null;
+    // DONE: revert to private after using TreePrinter to test.
+    // public BSTNode root = null;
+    private BSTNode root = null;
     private int size = 0;
     private final Comparator<T> cmp;
     private final Stack<BSTNode> path = new Stack<>();

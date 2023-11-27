@@ -5,7 +5,7 @@ import java.util.Comparator;
 public class Token implements Comparable<Token> {
 
     private int count = 1;
-    private String str;
+    private final String str;
 
     /**
      * Constructs a new Token with the given string.
