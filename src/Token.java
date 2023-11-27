@@ -48,23 +48,30 @@ public class Token implements Comparable<Token> {
      * Override equals method to compare two objects on if they are equal
      * @param obj object to be compared to calling object
      * @return b boolean true if equal, false otherwise
+     *
      */
     @Override
     public boolean equals(Object obj) {
         /*
-         * A non-empty, non-null, unequal String object should return false.
+         * A non-empty, non-null, unequal Token object should return false.
          * Default false
          */
         if (obj == null) {
             return false;
-        } else // Content comparison := aString.equals(anotherString).
-            if (this == obj) {
+        } else if (this == obj) {
             /*
-             * Reflexive x.equals(x) := true; ie, an object is equal to
+             * Reflexive x.equals(x) := true; i.e., an object is equal to
              * itself.
              */
             return true;
-        } else return this.str.equals(obj.toString());
+        } else {
+            if (obj instanceof Token) {
+                Token otherToken = (Token) obj;
+                // Compare both the string and count fields
+                return this.str.equals(otherToken.str) && this.count == otherToken.count;
+            }
+        }
+        return false;
     }
 
     /**

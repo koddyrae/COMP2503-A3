@@ -152,9 +152,7 @@ public class BST<T extends Comparable<T>> {
             }
 
             // The path has been modified, so it must be emptied before any other operations may occur.
-            while(path.size() > 0) {
-                path.pop();
-            }
+            path.clear();
         }
     }
 
@@ -167,9 +165,7 @@ public class BST<T extends Comparable<T>> {
      */
     public T find(T t) {
         // Empty the stack before beginning a search.
-        while (path.size() > 0) {
-            path.pop();
-        }
+        path.clear();
 
         // Search for an element containing data equivalent to the search parameter object.
         find(t, root);
@@ -201,9 +197,7 @@ public class BST<T extends Comparable<T>> {
 
         // Empty the stack, because no element matching the search parameter was found.
         if (n == null) {
-            while (path.size() > 0) {
-                path.pop();
-            }
+            path.clear();
         }
     }
 

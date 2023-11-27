@@ -137,13 +137,14 @@ public class A3
                 add the token to the BST, otherwise, increase the frequency count of the
                 object already in the tree.
                */
-               Token maybeNewElement = new Token(word),
-                       existingElement = wordsByNaturalOrder.find(maybeNewElement);
+               Token maybeNewElement = new Token(word);
+               Token existingElement = wordsByNaturalOrder.find(maybeNewElement);
                if (existingElement == null) {
                    wordsByNaturalOrder.add(maybeNewElement);
                } else if (maybeNewElement.equals(existingElement)){
                    existingElement.incrementCount();
                }
+               existingElement = null;
            }
        }
    }
