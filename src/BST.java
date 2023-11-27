@@ -78,86 +78,17 @@ public class BST<T extends Comparable<T>> {
 
     /**
      * @author Bryce Carson
-     * Method to delete a node from the BST
-     * @param t the data of the node that needs to be deleted
+     * Method to delete an element from the BST
+     * @param targetElement the data of the node that needs to be deleted
      *
      */
-    public void delete(T t) {
-        // Recall that find has the side effect of setting `path`.
-        if (find(t) == t) {
-            int children = 0;
-            if (path.peek().getLeft() != null) children++;
-            if (path.peek().getRight() != null) children++;
-
-            BSTNode child, leftChild, rightChild, target, parent, grandparent = null, minimum;
-
-            switch(children) {
-                case 1:
-                    child = ((path.peek().getLeft() == null) ? path.peek().getRight() : path.peek().getLeft());
-
-                    if (path.peek() == root) {
-                        root = child;
-                        break;
-                    }
-
-                    target = path.pop();
-                    grandparent = path.pop();
-
-                    if ((grandparent.getLeft() == target)) {
-                        grandparent.setLeft(child);
-                    } else {
-                        grandparent.setRight(child);
-                    }
-
-                    break;
-                case 2:
-                    target = path.pop();
-                    if (target != root) {
-                        // Null when target == root.
-                        grandparent = path.pop();
-                    }
-                    leftChild = target.getLeft();
-                    rightChild = target.getRight();
-                    minimum = minimum(rightChild);
-
-                    if (target == root) {
-                        // Orphanage and adoption potentially occurs in this case; if the orphan is not null, then the
-                        // orphan's grandparent adopts it to it's left.
-                        minimum.setLeft(leftChild);
-                        minimum.setRight(rightChild);
-                        root = minimum;
-                        if (orphan != null) {
-                            BSTNode orphan = this.orphan;
-                            minimum(rightChild).setLeft(orphan); // Acquire the grandparent of the orphan.
-                            this.orphan = null; // Nullify unintended side-effect.
-                        }
-                    } else {
-                        // Recall that minimum sets this.orphan; this is irrelevant when the node being removed is not
-                        // root.
-                        grandparent.setRight(minimum(rightChild).setLeft(leftChild));
-                    }
-
-                    break;
-                case 0:
-                default:
-                    if (path.peek() == root) { root = null; break; } // Break early, there's no parent who disowns.
-                    target = path.pop();
-                    parent = path.pop();
-
-                    // Finally delete the node by de-referencing the proper child of the parent (disown the child).
-                    if (parent.getRight() == target) parent.setRight(null);
-                    if (parent.getLeft() == target) parent.setLeft(null);
-
-                    // Stop switching.
-                    break;
-            }
-
-            // The path has been modified, so it must be emptied before any other operations may occur.
-            while(path.size() > 0) {
-                path.pop();
-            }
+    public void delete(T targetElement) {
+        if (root != null) {
+            delete(targetElement, root);
         }
     }
+
+    // TODO: insert Nandan's delete method here.
 
     /**
      * If the data is found within the tree, the path along the edges of the tree are
