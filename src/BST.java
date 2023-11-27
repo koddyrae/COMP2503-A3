@@ -193,12 +193,13 @@ public class BST<T extends Comparable<T>> {
                 n = n.getLeft();
             } else if (comparison > 0) {
                 n = n.getRight();
+            } else {
+                /* If the comparison is equal to zero we have found the element and no
+                 * other branch applies. Looping stops, path is retained (because n is not
+                 * null), and the method returns to its caller.
+                 */
+                break;
             }
-            /* If the comparison is equal to zero we have found the element and no
-             * other branch applies. Recursion stops, path is retained, and the method
-             * returns to its caller.
-             */
-            break;
         }
 
         // Empty the stack, because no element matching the search parameter was found.
