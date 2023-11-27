@@ -18,10 +18,6 @@ public class BST<T extends Comparable<T>> {
     // A node which is orphaned when the minimum of a right-subtree has a right child. It is promoted to its parents position.
     private BSTNode orphan = null;
 
-    public BSTNode getRoot() {
-        return root;
-    }
-
     /**
      * Constructor for a BST that contains a comparator for ordering
      * @param comparator the desired comparator used

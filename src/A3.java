@@ -1,5 +1,3 @@
-import tech.vanyo.TreePrinter;
-
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -40,17 +38,9 @@ public class A3
    public static void main(String[] args)
    {	
        readFile();
-       TreePrinter<BST<Token>.BSTNode> treePrinter = new TreePrinter<>(n -> n.getData().toString(), n -> n.getLeft(), n -> n.getRight());
-       treePrinter.setHspace(3);
-       treePrinter.setPrintStream(System.out);
-       treePrinter.setSquareBranches(true);
-       treePrinter.setLrAgnostic(false);
-       treePrinter.printTree(wordsByNaturalOrder.getRoot());
-/*
        removeStop();
        createFreqLists();
        printResults();
-*/
    }
 
     /**
@@ -66,7 +56,7 @@ public class A3
 
        if (wordsByFrequencyDescending.size() != 0) {
            int sizePrinted = Math.min(wordsByFrequencyDescending.size(), 10);
-           System.out.println("\n" + sizePrinted + "Most Frequent");
+           System.out.println("\n" + sizePrinted + " Most Frequent");
            //To print words in order of descending frequency
            Iterator<Token> wordsByFreqDescInOrder = new BST.InOrderIterator<>(wordsByFrequencyDescending);
            i = 10;
