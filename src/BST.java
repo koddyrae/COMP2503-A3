@@ -1,3 +1,5 @@
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 /**
@@ -326,26 +328,22 @@ public class BST<T extends Comparable<T>> {
      * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
      */
     static class InOrderIterator<T extends Comparable<T>> implements Iterator<T> {
-        private final Stack<BST<T>.BSTNode> stack = new Stack<>();
+        private final Queue<BST<T>.BSTNode> queue = new LinkedList<>();
 
-        public InOrderIterator(BST<T> tree) {
-            if (tree == null) {
-                return;
-            }
-            else {
-                BST<T>.BSTNode current = tree.root;
+        public InOrderIterator(@NotNull BST<T> tree) {
+            Stack<BST<T>.BSTNode> stack = new Stack<>();
+            BST<T>.BSTNode current = tree.root;
 
-                while(!stack.empty() || current != null) {
-                    if (current != null) {
-                        stack.push(current);
-                        current = current.getLeft();
-                    }
-                    else {
-                        current = stack.pop();
-                        current = current.getRight();
-                    }
+            while(!stack.empty() || current != null) {
+                if (current != null) {
+                    stack.push(current);
+                    current = current.getLeft();
                 }
-
+                else {
+                    current = stack.pop();
+                    this.queue.add(current);
+                    current = current.getRight();
+                }
             }
         }
 
@@ -355,7 +353,7 @@ public class BST<T extends Comparable<T>> {
          */
         @Override
         public boolean hasNext() {
-            return !stack.isEmpty();
+            return !queue.isEmpty();
         }
 
         /**
@@ -364,7 +362,7 @@ public class BST<T extends Comparable<T>> {
          */
         @Override
         public T next() {
-            return (T) stack.pop();
+            return (T) queue.remove();
         }
     }
 
