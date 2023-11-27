@@ -1,3 +1,5 @@
+import tech.vanyo.TreePrinter;
+
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -36,9 +38,26 @@ public class A3
      * @param args command lines args
      */
    public static void main(String[] args)
-   {	
+   {
+       // TODO: remove after finishing check that delete works well.
+       TreePrinter<BST<Token>.BSTNode> treePrinter = new TreePrinter<>(n -> n.getData().format(), n -> n.getLeft(), n -> n.getRight());
+       treePrinter.setHspace(3);
+       treePrinter.setPrintStream(System.out);
+       treePrinter.setSquareBranches(true);
+       treePrinter.setLrAgnostic(false);
+
        readFile();
+
+       // TODO: remove after finishing check that delete works well.
+       System.out.println("The tree before deleting stop words.");
+       treePrinter.printTree(wordsByNaturalOrder.root);
+
        removeStop();
+
+       // TODO: remove after finishing check that delete works well.
+       System.out.println("\n\nThe tree after deleting stop words.");
+       treePrinter.printTree(wordsByNaturalOrder.root);
+
        createFreqLists();
        printResults();
    }
@@ -63,8 +82,7 @@ public class A3
            while ((i > 0) && wordsByFreqDescInOrder.hasNext()) {
                --i; // Decrement the sentinel.
                Token t = wordsByFreqDescInOrder.next();
-               // DONE: Whenever you print a Token, print the word, its length, and the number of times it occurred, separated by colons.
-               System.out.println(t + ":" + t.toString().length() + ":" + t.getCount());
+               System.out.println(t.format());
            }
        } else {
            System.out.println("\nNo words with a frequency greater than 2 existed in the input.");
@@ -79,7 +97,7 @@ public class A3
            while ((i > 0) && wordsByLengthInDescendingOrder.hasNext()) {
                --i;
                Token t = wordsByLengthInDescendingOrder.next();
-               System.out.println(t + ":" + t.toString().length() + ":" + t.getCount());
+               System.out.println(t.format());
            }
        }
        if (wordsByLengthDescending.size() == 0) {
@@ -88,7 +106,7 @@ public class A3
        } else {
            Iterator<Token> longestIterator = new BST.InOrderIterator<>(wordsByLengthDescending);
            Token longest = longestIterator.next();
-           System.out.println("\nThe longest word is " + longest + " : " + longest.toString().length() + " : " + longest.getCount());
+           System.out.println("\nThe longest word is " + longest);
            System.out.println("The average word length is " + avgLength());
        }
 
@@ -97,7 +115,7 @@ public class A3
        Iterator<Token> wordsByNaturalOrderInOrder = new BST.InOrderIterator<>(wordsByNaturalOrder);
        while (wordsByNaturalOrderInOrder.hasNext()) {
            Token t = wordsByNaturalOrderInOrder.next();
-           System.out.println(t + ":" + t.toString().length() + ":" + t.getCount());
+           System.out.println(t.format());
        }
 
        //To print each trees height

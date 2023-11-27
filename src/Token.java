@@ -6,7 +6,6 @@ public class Token implements Comparable<Token> {
 
     private int count = 1;
     private String str;
-    public boolean stopWord;
 
     /**
      * Constructs a new Token with the given string.
@@ -16,16 +15,6 @@ public class Token implements Comparable<Token> {
      */
     public Token(String s) {
         this.str = s;
-    }
-
-    /**
-     * An alternative constructor to create a stop word, which aides in removal of the stop word later in the program.
-     * @param s The text of the string token.
-     * @param b Whether the token is a stop word.
-     */
-    public Token(String s, boolean b) {
-        this.str = s;
-        this.stopWord = b;
     }
 
     /**
@@ -106,5 +95,17 @@ public class Token implements Comparable<Token> {
     @Override
     public String toString() {
         return this.str;
+    }
+
+    /**
+     * Used to format the object for pretty-printing with the TreePrinter class.
+     * @return A string formatted with the string contents of the token, its length, and
+     * its frequency, separated by colons and no whitespace.
+     */
+    public String format() {
+        /* DONE: Whenever you print a Token, print the word, its length, and the number of
+         * times it occurred, separated by colons.
+         */
+        return str + ":" + str.length() + ":" + count;
     }
 }

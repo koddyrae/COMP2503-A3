@@ -11,12 +11,11 @@ import java.util.*;
  * though naively.
  */
 public class BST<T extends Comparable<T>> {
-    private BSTNode root = null;
+    // TODO: revert to private after using TreePrinter to test.
+    public BSTNode root = null;
     private int size = 0;
     private final Comparator<T> cmp;
     private final Stack<BSTNode> path = new Stack<>();
-    // A node which is orphaned when the minimum of a right-subtree has a right child. It is promoted to its parents position.
-    private BSTNode orphan = null;
 
     /**
      * Constructor for a BST that contains a comparator for ordering
@@ -84,11 +83,42 @@ public class BST<T extends Comparable<T>> {
      */
     public void delete(T targetElement) {
         if (root != null) {
-            delete(targetElement, root);
+            root = delete(root, targetElement);
         }
     }
 
-    // TODO: insert Nandan's delete method here.
+    /**
+     * @author Nandan
+     * @param subtreeRoot The subtreeRoot of the subtree.
+     * @param targetElement The element to delete from the tree.
+     * @return A node, which is used to update the tree in previous recursive calls.
+     */
+    private BSTNode delete(BSTNode subtreeRoot, T targetElement) {
+        if (subtreeRoot != null) {
+            int comparison = cmp.compare(targetElement, subtreeRoot.getData());
+
+            if (comparison < 0) {
+                subtreeRoot.setLeft(delete(subtreeRoot.getLeft(), targetElement));
+            } else if (comparison > 0) {
+                subtreeRoot.setRight(delete(subtreeRoot.getRight(), targetElement));
+            } else {
+                // targetElement is equal to the subtreeRoot node.
+                if (subtreeRoot.getLeft() == null) {
+                    return subtreeRoot.getRight();
+                } else if (subtreeRoot.getRight() == null) {
+                    return subtreeRoot.getLeft();
+                }
+
+                // Node with two children: get the inorder successor (smallest
+                // in the right subtree)
+                subtreeRoot.setData(minimum(subtreeRoot.getRight()).getData());
+
+                // Delete the inorder successor
+                subtreeRoot.setRight(delete(subtreeRoot.getRight(), subtreeRoot.getData()));
+            }
+        }
+        return subtreeRoot;
+    }
 
     /**
      * If the data is found within the tree, the path along the edges of the tree are
@@ -136,8 +166,6 @@ public class BST<T extends Comparable<T>> {
         }
     }
 
-    // Calling this method sets this.orphan, but the node is not actually orphaned.
-
     /**
      * Method to return the minimum node of the tree
      * @param n the starting node (either smallest or needs to recurse)
@@ -149,7 +177,6 @@ public class BST<T extends Comparable<T>> {
         if (n.getLeft() != null) {
             return minimum(n.getLeft()); // Tail-recurse
         } else {
-            this.orphan = n.getRight(); // NULL is a permitted value for this field.
             return n; // The minimum in the subtree.
         }
     }
@@ -324,12 +351,11 @@ public class BST<T extends Comparable<T>> {
 
         /**
          * Method to set the left child of a node
+         *
          * @param l the node to be set as left child
-         * @return node the current calling node
          */
-        public BSTNode setLeft(BSTNode l) {
+        public void setLeft(BSTNode l) {
             left = l;
-            return this;
         }
 
         /**
