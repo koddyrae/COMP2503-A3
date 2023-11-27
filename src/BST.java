@@ -1,5 +1,3 @@
-import org.jetbrains.annotations.NotNull;
-
 import java.util.*;
 
 /**
@@ -207,17 +205,6 @@ public class BST<T extends Comparable<T>> {
         }
     }
 
-    /**
-     * Method to return the minimum node of the tree
-     * @return node the data of the node
-     * @throws RuntimeException exception for if there is no minimum in the tree (it's null)
-     */
-    // Calling this method sets this.orphan, but the node is not actually orphaned.
-    public T minimum() throws RuntimeException {
-        if (root == null) throw new RuntimeException("There is no minimum in a tree with a null root.");
-        return minimum(root).getData();
-    }
-
     // Calling this method sets this.orphan, but the node is not actually orphaned.
 
     /**
@@ -330,19 +317,23 @@ public class BST<T extends Comparable<T>> {
     static class InOrderIterator<T extends Comparable<T>> implements Iterator<T> {
         private final Queue<T> queue = new LinkedList<>();
 
-        public InOrderIterator(@NotNull BST<T> tree) {
-            Stack<BST<T>.BSTNode> stack = new Stack<>();
-            BST<T>.BSTNode current = tree.root;
+        public InOrderIterator(BST<T> tree) throws IllegalArgumentException {
+            if (tree == null) {
+                throw new IllegalArgumentException("tree parameter cannot be null.");
+            } else {
+                Stack<BST<T>.BSTNode> stack = new Stack<>();
+                BST<T>.BSTNode current = tree.root;
 
-            while(!stack.empty() || current != null) {
-                if (current != null) {
-                    stack.push(current);
-                    current = current.getLeft();
-                }
-                else {
-                    current = stack.pop();
-                    this.queue.add(current.getData());
-                    current = current.getRight();
+                // FIXME: there is a circularity in the tree when using input one.
+                while(!stack.empty() || current != null) {
+                    if (current != null) {
+                        current = stack.push(current).getLeft();
+                    }
+                    else {
+                        current = stack.pop();
+                        this.queue.add(current.getData());
+                        current = current.getRight();
+                    }
                 }
             }
         }
@@ -362,7 +353,7 @@ public class BST<T extends Comparable<T>> {
          */
         @Override
         public T next() {
-            return (T) queue.remove();
+            return queue.remove();
         }
     }
 
@@ -412,12 +403,11 @@ public class BST<T extends Comparable<T>> {
 
         /**
          * Method to set the right child of a node
+         *
          * @param r the node to be set as right child
-         * @return node the current calling node
          */
-        public BSTNode setRight(BSTNode r) {
+        public void setRight(BSTNode r) {
             right = r;
-            return this;
         }
 
         /**
@@ -437,14 +427,6 @@ public class BST<T extends Comparable<T>> {
         }
 
         /**
-         * Method to check if the calling node is a leaf
-         * @return true if node is a leaf, false otherwise
-         */
-        public boolean isLeaf() {
-            return (getLeft() == null) && (getRight() == null);
-        }
-
-        /**
          * Comparison method to compare two nodes
          * @param n the object to be compared.
          * @return int the difference between the two nodes
@@ -453,13 +435,5 @@ public class BST<T extends Comparable<T>> {
             return this.getData().compareTo(n.getData());
         }
 
-        /**
-         * Comparison method to compare the data between a node and data
-         * @param t the data of to be compared
-         * @return int the difference between two nodes
-         */
-        public int compareTo(T t) {
-            return this.getData().compareTo(t);
-        }
     }
 }
