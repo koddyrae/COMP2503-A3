@@ -78,86 +78,17 @@ public class BST<T extends Comparable<T>> {
 
     /**
      * @author Bryce Carson
-     * Method to delete a node from the BST
-     * @param t the data of the node that needs to be deleted
+     * Method to delete an element from the BST
+     * @param targetElement the data of the node that needs to be deleted
      *
      */
-    public void delete(T t) {
-        // Recall that find has the side effect of setting `path`.
-        if (find(t) == t) {
-            int children = 0;
-            if (path.peek().getLeft() != null) children++;
-            if (path.peek().getRight() != null) children++;
-
-            BSTNode child, leftChild, rightChild, target, parent, grandparent = null, minimum;
-
-            switch(children) {
-                case 1:
-                    child = ((path.peek().getLeft() == null) ? path.peek().getRight() : path.peek().getLeft());
-
-                    if (path.peek() == root) {
-                        root = child;
-                        break;
-                    }
-
-                    target = path.pop();
-                    grandparent = path.pop();
-
-                    if ((grandparent.getLeft() == target)) {
-                        grandparent.setLeft(child);
-                    } else {
-                        grandparent.setRight(child);
-                    }
-
-                    break;
-                case 2:
-                    target = path.pop();
-                    if (target != root) {
-                        // Null when target == root.
-                        grandparent = path.pop();
-                    }
-                    leftChild = target.getLeft();
-                    rightChild = target.getRight();
-                    minimum = minimum(rightChild);
-
-                    if (target == root) {
-                        // Orphanage and adoption potentially occurs in this case; if the orphan is not null, then the
-                        // orphan's grandparent adopts it to it's left.
-                        minimum.setLeft(leftChild);
-                        minimum.setRight(rightChild);
-                        root = minimum;
-                        if (orphan != null) {
-                            BSTNode orphan = this.orphan;
-                            minimum(rightChild).setLeft(orphan); // Acquire the grandparent of the orphan.
-                            this.orphan = null; // Nullify unintended side-effect.
-                        }
-                    } else {
-                        // Recall that minimum sets this.orphan; this is irrelevant when the node being removed is not
-                        // root.
-                        grandparent.setRight(minimum(rightChild).setLeft(leftChild));
-                    }
-
-                    break;
-                case 0:
-                default:
-                    if (path.peek() == root) { root = null; break; } // Break early, there's no parent who disowns.
-                    target = path.pop();
-                    parent = path.pop();
-
-                    // Finally delete the node by de-referencing the proper child of the parent (disown the child).
-                    if (parent.getRight() == target) parent.setRight(null);
-                    if (parent.getLeft() == target) parent.setLeft(null);
-
-                    // Stop switching.
-                    break;
-            }
-
-            // The path has been modified, so it must be emptied before any other operations may occur.
-            while(path.size() > 0) {
-                path.pop();
-            }
+    public void delete(T targetElement) {
+        if (root != null) {
+            delete(targetElement, root);
         }
     }
+
+    // TODO: insert Nandan's delete method here.
 
     /**
      * If the data is found within the tree, the path along the edges of the tree are
@@ -203,17 +134,6 @@ public class BST<T extends Comparable<T>> {
         if (n == null) {
             path.clear();
         }
-    }
-
-    /**
-     * Method to return the minimum node of the tree
-     * @return node the data of the node
-     * @throws RuntimeException exception for if there is no minimum in the tree (it's null)
-     */
-    // Calling this method sets this.orphan, but the node is not actually orphaned.
-    public T minimum() throws RuntimeException {
-        if (root == null) throw new RuntimeException("There is no minimum in a tree with a null root.");
-        return minimum(root).getData();
     }
 
     // Calling this method sets this.orphan, but the node is not actually orphaned.
@@ -326,25 +246,26 @@ public class BST<T extends Comparable<T>> {
      * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
      */
     static class InOrderIterator<T extends Comparable<T>> implements Iterator<T> {
-        private final Queue<T> typeQueue = new LinkedList<>();
+        private final Queue<T> queue = new LinkedList<>();
 
-        /**
-         * Default constructor of the InOrder iterator
-         * @param tree the tree that needs to be traversed
-         */
-        InOrderIterator(BST<T> tree) {
-            inOrderTraversal(tree.root);
-        }
+        public InOrderIterator(BST<T> tree) throws IllegalArgumentException {
+            if (tree == null) {
+                throw new IllegalArgumentException("tree parameter cannot be null.");
+            } else {
+                Stack<BST<T>.BSTNode> stack = new Stack<>();
+                BST<T>.BSTNode current = tree.root;
 
-        /**
-         * Method to inOrder traverse through the tree
-         * @param n the node to check
-         */
-        private void inOrderTraversal(BST<T>.BSTNode n) {
-            if (n != null) {
-                inOrderTraversal(n.getLeft());
-                this.typeQueue.add(n.getData());
-                inOrderTraversal(n.getRight());
+                // FIXME: there is a circularity in the tree when using input one.
+                while(!stack.empty() || current != null) {
+                    if (current != null) {
+                        current = stack.push(current).getLeft();
+                    }
+                    else {
+                        current = stack.pop();
+                        this.queue.add(current.getData());
+                        current = current.getRight();
+                    }
+                }
             }
         }
 
@@ -354,7 +275,7 @@ public class BST<T extends Comparable<T>> {
          */
         @Override
         public boolean hasNext() {
-            return !typeQueue.isEmpty();
+            return !queue.isEmpty();
         }
 
         /**
@@ -363,7 +284,7 @@ public class BST<T extends Comparable<T>> {
          */
         @Override
         public T next() {
-            return typeQueue.remove();
+            return queue.remove();
         }
     }
 
@@ -413,12 +334,11 @@ public class BST<T extends Comparable<T>> {
 
         /**
          * Method to set the right child of a node
+         *
          * @param r the node to be set as right child
-         * @return node the current calling node
          */
-        public BSTNode setRight(BSTNode r) {
+        public void setRight(BSTNode r) {
             right = r;
-            return this;
         }
 
         /**
@@ -438,14 +358,6 @@ public class BST<T extends Comparable<T>> {
         }
 
         /**
-         * Method to check if the calling node is a leaf
-         * @return true if node is a leaf, false otherwise
-         */
-        public boolean isLeaf() {
-            return (getLeft() == null) && (getRight() == null);
-        }
-
-        /**
          * Comparison method to compare two nodes
          * @param n the object to be compared.
          * @return int the difference between the two nodes
@@ -454,13 +366,5 @@ public class BST<T extends Comparable<T>> {
             return this.getData().compareTo(n.getData());
         }
 
-        /**
-         * Comparison method to compare the data between a node and data
-         * @param t the data of to be compared
-         * @return int the difference between two nodes
-         */
-        public int compareTo(T t) {
-            return this.getData().compareTo(t);
-        }
     }
 }
