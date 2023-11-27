@@ -1,6 +1,5 @@
-
-import java.util.Scanner;
 import java.util.Iterator;
+import java.util.Scanner;
 
 /**
  * Main class to handle main functionality of the program
@@ -56,8 +55,8 @@ public class A3
        int i;
 
        if (wordsByFrequencyDescending.size() != 0) {
-           int sizePrinted = (wordsByFrequencyDescending.size() >= 10) ? 10 : wordsByFrequencyDescending.size();
-           System.out.println("\n" + sizePrinted + "Most Frequent");
+           int sizePrinted = Math.min(wordsByFrequencyDescending.size(), 10);
+           System.out.println("\n" + sizePrinted + " Most Frequent");
            //To print words in order of descending frequency
            Iterator<Token> wordsByFreqDescInOrder = new BST.InOrderIterator<>(wordsByFrequencyDescending);
            i = 10;
@@ -72,7 +71,7 @@ public class A3
        }
 
        if (wordsByLengthDescending.size() != 0) {
-           int sizePrinted = (wordsByLengthDescending.size() >= 10) ? 10 : wordsByLengthDescending.size();
+           int sizePrinted = Math.min(wordsByLengthDescending.size(), 10);
            System.out.println("\n" + sizePrinted + " Longest");
            //To print words in order of descending length
            Iterator<Token> wordsByLengthInDescendingOrder = new BST.InOrderIterator<>(wordsByLengthDescending);
@@ -133,15 +132,14 @@ public class A3
            if (word.length() > 0) {
                totalWordCount++;
                /*
-                Create a new token object, if not already in the wordsByNaturalOrder,
-                add the token to the BST, otherwise, increase the frequency count of the
-                object already in the tree.
+                existingElement is either null or the same as maybeNewElement (in which
+                case, maybeNewElement is not a new element; ie, maybe resolves to "not").
                */
                Token maybeNewElement = new Token(word),
                        existingElement = wordsByNaturalOrder.find(maybeNewElement);
                if (existingElement == null) {
                    wordsByNaturalOrder.add(maybeNewElement);
-               } else if (maybeNewElement.equals(existingElement)){
+               } else {
                    existingElement.incrementCount();
                }
            }
@@ -152,14 +150,6 @@ public class A3
     * Method to create the frequency and length lists.
     */
    private static void createFreqLists() {
-       // Use your implementation of the iterator interface
-       // for the BST class.
-
-       // Make sure you only add words that have occurred more than twice
-       // to the tree ordered by word frequency.
-
-       // All words in the original tree must be added to tree ordered by word length
-
        Iterator<Token> iterator = new BST.InOrderIterator<>(wordsByNaturalOrder);
 
        // Iterate over the words in the tree

@@ -53,10 +53,9 @@ public class BST<T extends Comparable<T>> {
      * @param root location of where node should be added
      * @param nodeToAdd the node being added
      */
-    private void add(BSTNode root, BSTNode nodeToAdd) {
-        int comparison = cmp.compare(root.getData(), nodeToAdd.getData());
+    private void add(BSTNode root, BSTNode nodeToAdd) throws RuntimeException {
+        int comparison = cmp.compare(nodeToAdd.getData(), root.getData());
 
-        // There should never be a case where the comparison is equal, so it's not dealt with here.
         if (comparison < 0) {
             if (root.getLeft() == null) {
                 root.setLeft(nodeToAdd);
@@ -72,6 +71,8 @@ public class BST<T extends Comparable<T>> {
             else {
                 add(root.getRight(), nodeToAdd);
             }
+        } else {
+            throw new RuntimeException("Existing element attempting to be added to tree.");
         }
     }
 
@@ -167,9 +168,7 @@ public class BST<T extends Comparable<T>> {
      */
     public T find(T t) {
         // Empty the stack before beginning a search.
-        while (path.size() > 0) {
-            path.pop();
-        }
+        path.clear();
 
         // Search for an element containing data equivalent to the search parameter object.
         find(t, root);
@@ -191,19 +190,18 @@ public class BST<T extends Comparable<T>> {
                 n = n.getLeft();
             } else if (comparison > 0) {
                 n = n.getRight();
+            } else {
+                /* If the comparison is equal to zero we have found the element and no
+                 * other branch applies. Looping stops, path is retained (because n is not
+                 * null), and the method returns to its caller.
+                 */
+                break;
             }
-            /* If the comparison is equal to zero we have found the element and no
-             * other branch applies. Recursion stops, path is retained, and the method
-             * returns to its caller.
-             */
-            break;
         }
 
         // Empty the stack, because no element matching the search parameter was found.
         if (n == null) {
-            while (path.size() > 0) {
-                path.pop();
-            }
+            path.clear();
         }
     }
 
