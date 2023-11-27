@@ -326,25 +326,26 @@ public class BST<T extends Comparable<T>> {
      * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
      */
     static class InOrderIterator<T extends Comparable<T>> implements Iterator<T> {
-        private final Queue<T> typeQueue = new LinkedList<>();
+        private final Stack<BST<T>.BSTNode> stack = new Stack<>();
 
-        /**
-         * Default constructor of the InOrder iterator
-         * @param tree the tree that needs to be traversed
-         */
-        InOrderIterator(BST<T> tree) {
-            inOrderTraversal(tree.root);
-        }
+        public InOrderIterator(BST<T> tree) {
+            if (tree == null) {
+                return;
+            }
+            else {
+                BST<T>.BSTNode current = tree.root;
 
-        /**
-         * Method to inOrder traverse through the tree
-         * @param n the node to check
-         */
-        private void inOrderTraversal(BST<T>.BSTNode n) {
-            if (n != null) {
-                inOrderTraversal(n.getLeft());
-                this.typeQueue.add(n.getData());
-                inOrderTraversal(n.getRight());
+                while(!stack.empty() || current != null) {
+                    if (current != null) {
+                        stack.push(current);
+                        current = current.getLeft();
+                    }
+                    else {
+                        current = stack.pop();
+                        current = current.getRight();
+                    }
+                }
+
             }
         }
 
@@ -354,7 +355,7 @@ public class BST<T extends Comparable<T>> {
          */
         @Override
         public boolean hasNext() {
-            return !typeQueue.isEmpty();
+            return !stack.isEmpty();
         }
 
         /**
@@ -363,7 +364,7 @@ public class BST<T extends Comparable<T>> {
          */
         @Override
         public T next() {
-            return typeQueue.remove();
+            return (T) stack.pop();
         }
     }
 
