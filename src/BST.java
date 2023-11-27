@@ -328,7 +328,7 @@ public class BST<T extends Comparable<T>> {
      * @param <T> The type the iterator yields, which is the same type as the tree the iterator is initialized with.
      */
     static class InOrderIterator<T extends Comparable<T>> implements Iterator<T> {
-        private final Queue<BST<T>.BSTNode> queue = new LinkedList<>();
+        private final Queue<T> queue = new LinkedList<>();
 
         public InOrderIterator(@NotNull BST<T> tree) {
             Stack<BST<T>.BSTNode> stack = new Stack<>();
@@ -341,7 +341,7 @@ public class BST<T extends Comparable<T>> {
                 }
                 else {
                     current = stack.pop();
-                    this.queue.add(current);
+                    this.queue.add(current.getData());
                     current = current.getRight();
                 }
             }
